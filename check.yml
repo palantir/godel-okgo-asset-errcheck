@@ -1,0 +1,3 @@
+packages:
+  errcheck:
+    main: github.com/kisielk/errcheck
