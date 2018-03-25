@@ -21,7 +21,8 @@ import (
 	"github.com/palantir/okgo/checker"
 	"github.com/palantir/pkg/cobracli"
 
-	"github.com/palantir/godel-okgo-asset-errcheck/errcheck"
+	"github.com/palantir/godel-okgo-asset-errcheck/errcheck/config"
+	"github.com/palantir/godel-okgo-asset-errcheck/errcheck/creator"
 	"github.com/palantir/godel-okgo-asset-errcheck/generated_src"
 )
 
@@ -32,6 +33,6 @@ func main() {
 func checkMain(osArgs []string) int {
 	os.Args = osArgs
 	var debugFlagVal bool
-	rootCmd := checker.AssetRootCmd(errcheck.Creator(), "run errcheck check")
+	rootCmd := checker.AssetRootCmd(creator.Errcheck(), config.UpgradeConfig, "run errcheck check")
 	return cobracli.ExecuteWithDefaultParamsWithVersion(rootCmd, &debugFlagVal, "")
 }
