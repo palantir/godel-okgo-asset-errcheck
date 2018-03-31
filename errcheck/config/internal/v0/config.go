@@ -20,7 +20,7 @@ import (
 )
 
 type Config struct {
-	Ignore []string `yaml:"ignore"`
+	Ignore []string `yaml:"ignore,omitempty"`
 }
 
 func UpgradeConfig(cfgBytes []byte) ([]byte, error) {
