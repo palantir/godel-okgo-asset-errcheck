@@ -2,20 +2,20 @@ package amalgomated
 
 import (
 	"bufio"
-	"fmt"
 	"github.com/palantir/godel-okgo-asset-errcheck/generated_src/internal/github.com/kisielk/errcheck/amalgomated_flag"
+	"fmt"
 	"os"
 	"path/filepath"
 	"regexp"
 	"runtime"
 	"strings"
 
-	"github.com/kisielk/gotool"
 	"github.com/palantir/godel-okgo-asset-errcheck/generated_src/internal/github.com/kisielk/errcheck/internal/errcheck"
+	"github.com/kisielk/gotool"
 )
 
 const (
-	exitCodeOk int = iota
+	exitCodeOk	int	= iota
 	exitUncheckedError
 	exitFatalError
 )

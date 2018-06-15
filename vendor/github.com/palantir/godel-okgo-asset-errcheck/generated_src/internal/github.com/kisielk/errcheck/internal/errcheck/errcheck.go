@@ -34,20 +34,20 @@ var (
 
 // UncheckedError indicates the position of an unchecked error return.
 type UncheckedError struct {
-	Pos      token.Position
-	Line     string
-	FuncName string
+	Pos		token.Position
+	Line		string
+	FuncName	string
 }
 
 // UncheckedErrors is returned from the CheckPackage function if the package contains
 // any unchecked errors.
 // Errors should be appended using the Append method, which is safe to use concurrently.
 type UncheckedErrors struct {
-	mu sync.Mutex
+	mu	sync.Mutex
 
 	// Errors is a list of all the unchecked errors in the package.
 	// Printing an error reports its position within the file and the contents of the line.
-	Errors []UncheckedError
+	Errors	[]UncheckedError
 }
 
 func (e *UncheckedErrors) Append(errors ...UncheckedError) {
@@ -61,10 +61,10 @@ func (e *UncheckedErrors) Error() string {
 }
 
 // Len is the number of elements in the collection.
-func (e *UncheckedErrors) Len() int { return len(e.Errors) }
+func (e *UncheckedErrors) Len() int	{ return len(e.Errors) }
 
 // Swap swaps the elements with indexes i and j.
-func (e *UncheckedErrors) Swap(i, j int) { e.Errors[i], e.Errors[j] = e.Errors[j], e.Errors[i] }
+func (e *UncheckedErrors) Swap(i, j int)	{ e.Errors[i], e.Errors[j] = e.Errors[j], e.Errors[i] }
 
 type byName struct{ *UncheckedErrors }
 
@@ -91,24 +91,24 @@ type Checker struct {
 	// ignore is a map of package names to regular expressions. Identifiers from a package are
 	// checked against its regular expressions and if any of the expressions match the call
 	// is not checked.
-	Ignore map[string]*regexp.Regexp
+	Ignore	map[string]*regexp.Regexp
 
 	// If blank is true then assignments to the blank identifier are also considered to be
 	// ignored errors.
-	Blank bool
+	Blank	bool
 
 	// If asserts is true then ignored type assertion results are also checked
-	Asserts bool
+	Asserts	bool
 
 	// build tags
-	Tags []string
+	Tags	[]string
 
-	Verbose bool
+	Verbose	bool
 
 	// If true, checking of _test.go files is disabled
-	WithoutTests bool
+	WithoutTests	bool
 
-	exclude map[string]bool
+	exclude	map[string]bool
 }
 
 func NewChecker() *Checker {
@@ -120,13 +120,13 @@ func NewChecker() *Checker {
 func (c *Checker) SetExclude(l map[string]bool) {
 	// Default exclude for stdlib functions
 	c.exclude = map[string]bool{
-		"math/rand.Read":         true,
-		"(*math/rand.Rand).Read": true,
+		"math/rand.Read":		true,
+		"(*math/rand.Rand).Read":	true,
 
-		"(*bytes.Buffer).Write":       true,
-		"(*bytes.Buffer).WriteByte":   true,
-		"(*bytes.Buffer).WriteRune":   true,
-		"(*bytes.Buffer).WriteString": true,
+		"(*bytes.Buffer).Write":	true,
+		"(*bytes.Buffer).WriteByte":	true,
+		"(*bytes.Buffer).WriteRune":	true,
+		"(*bytes.Buffer).WriteString":	true,
 	}
 	for k := range l {
 		c.exclude[k] = true
@@ -168,7 +168,7 @@ func (c *Checker) CheckPackages(paths ...string) error {
 	var wg sync.WaitGroup
 	u := &UncheckedErrors{}
 	for _, pkgInfo := range program.InitialPackages() {
-		if pkgInfo.Pkg.Path() == "unsafe" { // not a real package
+		if pkgInfo.Pkg.Path() == "unsafe" {	// not a real package
 			continue
 		}
 
@@ -179,14 +179,14 @@ func (c *Checker) CheckPackages(paths ...string) error {
 			c.logf("Checking %s", pkgInfo.Pkg.Path())
 
 			v := &visitor{
-				prog:    program,
-				pkg:     pkgInfo,
-				ignore:  c.Ignore,
-				blank:   c.Blank,
-				asserts: c.Asserts,
-				lines:   make(map[string][]string),
-				exclude: c.exclude,
-				errors:  []UncheckedError{},
+				prog:		program,
+				pkg:		pkgInfo,
+				ignore:		c.Ignore,
+				blank:		c.Blank,
+				asserts:	c.Asserts,
+				lines:		make(map[string][]string),
+				exclude:	c.exclude,
+				errors:		[]UncheckedError{},
 			}
 
 			for _, astFile := range v.pkg.Files {
@@ -206,15 +206,15 @@ func (c *Checker) CheckPackages(paths ...string) error {
 
 // visitor implements the errcheck algorithm
 type visitor struct {
-	prog    *loader.Program
-	pkg     *loader.PackageInfo
-	ignore  map[string]*regexp.Regexp
-	blank   bool
-	asserts bool
-	lines   map[string][]string
-	exclude map[string]bool
+	prog	*loader.Program
+	pkg	*loader.PackageInfo
+	ignore	map[string]*regexp.Regexp
+	blank	bool
+	asserts	bool
+	lines	map[string][]string
+	exclude	map[string]bool
 
-	errors []UncheckedError
+	errors	[]UncheckedError
 }
 
 func (v *visitor) fullName(call *ast.CallExpr) (string, bool) {
