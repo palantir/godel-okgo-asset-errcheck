@@ -110,6 +110,35 @@ Finished errcheck
 `,
 			},
 			{
+				Name: "errcheck uses exclude configuration",
+				Specs: []gofiles.GoFileSpec{
+					{
+						RelPath: "foo.go",
+						Src: `package foo
+
+import "os"
+
+func Foo() {
+	os.Getwd()
+}
+`,
+					},
+				},
+				ConfigFiles: map[string]string{
+					"godel/config/godel.yml": godelYML,
+					"godel/config/check-plugin.yml": `
+checks:
+  errcheck:
+    config:
+      exclude:
+        - os.Getwd
+`,
+				},
+				WantOutput: `Running errcheck...
+Finished errcheck
+`,
+			},
+			{
 				Name: "unchecked error from inner directory",
 				Specs: []gofiles.GoFileSpec{
 					{
@@ -204,7 +233,7 @@ checks:
 				},
 			},
 			{
-				Name: `legacy configuration with args other than "ignore" fails`,
+				Name: `legacy configuration with unknown args fails`,
 				ConfigFiles: map[string]string{
 					"godel/config/check.yml": `
 checks:

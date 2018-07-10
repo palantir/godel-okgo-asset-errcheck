@@ -15,11 +15,18 @@
 package creator
 
 import (
+	"context"
 	"fmt"
+	"io"
+	"io/ioutil"
+	"os"
 	"regexp"
+	"strings"
 
 	"github.com/palantir/okgo/checker"
 	"github.com/palantir/okgo/okgo"
+	"github.com/palantir/pkg/signals"
+	"github.com/pkg/errors"
 	"gopkg.in/yaml.v2"
 
 	"github.com/palantir/godel-okgo-asset-errcheck/errcheck"
@@ -39,11 +46,39 @@ func Errcheck() checker.Creator {
 			}
 
 			var args []string
+			var postAction func()
+
 			if len(cfg.Ignore) > 0 {
-				args = append(args, "-ignore")
-				args = append(args, cfg.Ignore...)
+				args = append(args, "-ignore", strings.Join(cfg.Ignore, ","))
 			}
-			return checker.NewAmalgomatedChecker(errcheck.TypeName, checker.ParamPriority(errcheck.Priority), checker.ParamArgs(args...),
+
+			if len(cfg.Exclude) > 0 {
+				excludeFile, err := createExcludeFile(cfg.Exclude)
+				if err != nil {
+					if excludeFile != "" {
+						_ = os.Remove(excludeFile)
+					}
+					return nil, errors.Wrap(err, "failed to create exclude file")
+				}
+
+				ctx, cancel := signals.ContextWithShutdown(context.Background())
+				done := make(chan struct{})
+
+				postAction = func() {
+					cancel()
+					<-done
+				}
+
+				go func() {
+					<-ctx.Done()
+					_ = os.Remove(excludeFile)
+					done <- struct{}{}
+				}()
+
+				args = append(args, "-exclude", excludeFile)
+			}
+
+			c := checker.NewAmalgomatedChecker(errcheck.TypeName, checker.ParamPriority(errcheck.Priority), checker.ParamArgs(args...),
 				checker.ParamLineParserWithWd(
 					func(line, wd string) okgo.Issue {
 						if match := lineRegexp.FindStringSubmatch(line); match != nil {
@@ -52,7 +87,39 @@ func Errcheck() checker.Creator {
 						}
 						return okgo.NewIssueFromLine(line, wd)
 					},
-				)), nil
+				),
+			)
+			return &postActionChecker{c, postAction}, nil
 		},
 	)
+}
+
+type postActionChecker struct {
+	okgo.Checker
+	action func()
+}
+
+func (c *postActionChecker) Check(pkgPaths []string, projectDir string, stdout io.Writer) {
+	if c.action != nil {
+		defer c.action()
+	}
+	c.Checker.Check(pkgPaths, projectDir, stdout)
+}
+
+func createExcludeFile(excludes []string) (file string, err error) {
+	tmp, err := ioutil.TempFile("", "")
+	if err != nil {
+		return "", errors.Wrap(err, "failed to create temporary file")
+	}
+
+	defer func() {
+		if cerr := tmp.Close(); cerr != nil && err == nil {
+			err = errors.Wrap(cerr, "failed to close file")
+		}
+	}()
+
+	if _, err := tmp.WriteString(strings.Join(excludes, "\n")); err != nil {
+		return tmp.Name(), errors.Wrap(err, "failed to write excludes to file")
+	}
+	return tmp.Name(), nil
 }
