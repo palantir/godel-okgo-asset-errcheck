@@ -145,6 +145,7 @@
     "cobracli",
     "matcher",
     "pkgpath",
+    "signals",
     "specdir",
   ]
   revision = "23395ebeee5df1083443a6261e5f674a76af91b6"
@@ -230,6 +231,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "9a2105cdcb9b0906c3683226f03caa59c47f80a7b856ba0757d6f7eea9c99b4c"
+  inputs-digest = "f61167a81c9bb2c72083bb8379400dc5d0effb38d9fab35cc96b9597623dac88"
   solver-name = "gps-cdcl"
   solver-version = 1
