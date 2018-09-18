@@ -18,7 +18,7 @@ import (
 	"testing"
 
 	"github.com/palantir/godel/framework/pluginapitester"
-	"github.com/palantir/godel/pkg/products"
+	"github.com/palantir/godel/pkg/products/v2/products"
 	"github.com/stretchr/testify/require"
 )
 
@@ -45,8 +45,7 @@ exclude:
 				Legacy:     true,
 				WantOutput: "Upgraded configuration for check-plugin.yml\n",
 				WantFiles: map[string]string{
-					"godel/config/check-plugin.yml": `release-tag: go1.7
-exclude:
+					"godel/config/check-plugin.yml": `exclude:
   names:
   - m?cks
   paths:

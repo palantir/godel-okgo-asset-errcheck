@@ -67,6 +67,7 @@ func AssetCheckerCreators(assetPaths ...string) ([]Creator, []okgo.ConfigUpgrade
 	var configUpgraders []okgo.ConfigUpgrader
 	checkerTypeToAssets := make(map[okgo.CheckerType][]string)
 	for _, currAssetPath := range assetPaths {
+		currAssetPath := currAssetPath
 		currChecker := assetChecker{
 			assetPath: currAssetPath,
 		}
@@ -81,11 +82,14 @@ func AssetCheckerCreators(assetPaths ...string) ([]Creator, []okgo.ConfigUpgrade
 		checkerTypeToAssets[checkerType] = append(checkerTypeToAssets[checkerType], currAssetPath)
 		checkerCreators = append(checkerCreators, NewCreator(checkerType, checkerPriority,
 			func(cfgYML []byte) (okgo.Checker, error) {
-				currChecker.cfgYML = string(cfgYML)
-				if err := currChecker.VerifyConfig(); err != nil {
+				newChecker := assetChecker{
+					assetPath: currAssetPath,
+					cfgYML:    string(cfgYML),
+				}
+				if err := newChecker.VerifyConfig(); err != nil {
 					return nil, err
 				}
-				return &currChecker, nil
+				return &newChecker, nil
 			}))
 		configUpgraders = append(configUpgraders, &assetConfigUpgrader{
 			typeName:  checkerType,

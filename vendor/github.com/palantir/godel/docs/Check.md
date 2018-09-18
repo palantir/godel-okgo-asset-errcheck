@@ -58,10 +58,10 @@ on the project:
 
 ```
 ➜ ./godelw check
-[compiles]      Running compiles...
-[extimport]     Running extimport...
-[errcheck]      Running errcheck...
 [deadcode]      Running deadcode...
+[extimport]     Running extimport...
+[compiles]      Running compiles...
+[errcheck]      Running errcheck...
 [extimport]     Finished extimport
 [golint]        Running golint...
 [golint]        echo/echo.go:9:1: receiver name should not be an underscore, omit the name if it is unused
@@ -75,14 +75,14 @@ on the project:
 [novendor]      Running novendor...
 [novendor]      Finished novendor
 [outparamcheck] Running outparamcheck...
-[errcheck]      Finished errcheck
-[unconvert]     Running unconvert...
 [compiles]      Finished compiles
-[varcheck]      Running varcheck...
+[unconvert]     Running unconvert...
+[errcheck]      Finished errcheck
 [deadcode]      Finished deadcode
+[varcheck]      Running varcheck...
 [outparamcheck] Finished outparamcheck
-[varcheck]      Finished varcheck
 [unconvert]     Finished unconvert
+[varcheck]      Finished varcheck
 Check(s) produced output: [golint]
 ```
 
@@ -107,10 +107,10 @@ Run `./godelw check` again to verify that the issue has been resolved:
 
 ```
 ➜ ./godelw check
-[compiles]      Running compiles...
-[extimport]     Running extimport...
-[deadcode]      Running deadcode...
 [errcheck]      Running errcheck...
+[extimport]     Running extimport...
+[compiles]      Running compiles...
+[deadcode]      Running deadcode...
 [extimport]     Finished extimport
 [golint]        Running golint...
 [golint]        Finished golint
@@ -123,11 +123,11 @@ Run `./godelw check` again to verify that the issue has been resolved:
 [novendor]      Running novendor...
 [novendor]      Finished novendor
 [outparamcheck] Running outparamcheck...
-[errcheck]      Finished errcheck
+[deadcode]      Finished deadcode
 [unconvert]     Running unconvert...
+[errcheck]      Finished errcheck
 [compiles]      Finished compiles
 [varcheck]      Running varcheck...
-[deadcode]      Finished deadcode
 [outparamcheck] Finished outparamcheck
 [unconvert]     Finished unconvert
 [varcheck]      Finished varcheck
@@ -138,7 +138,7 @@ Commit the changes to the repository:
 ```
 ➜ git add main.go echo
 ➜ git commit -m "Add echoer interface"
-[master 49a405e] Add echoer interface
+[master 626c0ec] Add echoer interface
  3 files changed, 14 insertions(+), 2 deletions(-)
  create mode 100644 echo/echoer.go
 ```
@@ -176,10 +176,10 @@ Running `./godelw check` flags the following:
 
 ```
 ➜ ./godelw check
-[extimport]     Running extimport...
-[compiles]      Running compiles...
-[deadcode]      Running deadcode...
 [errcheck]      Running errcheck...
+[extimport]     Running extimport...
+[deadcode]      Running deadcode...
+[compiles]      Running compiles...
 [extimport]     Finished extimport
 [golint]        Running golint...
 [golint]        echo/echoer.go:3:1: comment on exported type Echoer should be of the form "Echoer ..." (with optional leading article)
@@ -193,14 +193,14 @@ Running `./godelw check` flags the following:
 [novendor]      Running novendor...
 [novendor]      Finished novendor
 [outparamcheck] Running outparamcheck...
-[errcheck]      Finished errcheck
+[compiles]      Finished compiles
 [unconvert]     Running unconvert...
 [deadcode]      Finished deadcode
 [varcheck]      Running varcheck...
-[compiles]      Finished compiles
+[errcheck]      Finished errcheck
 [outparamcheck] Finished outparamcheck
-[unconvert]     Finished unconvert
 [varcheck]      Finished varcheck
+[unconvert]     Finished unconvert
 Check(s) produced output: [golint]
 ```
 
@@ -236,10 +236,10 @@ reported:
 
 ```
 ➜ ./godelw check
-[extimport]     Running extimport...
 [compiles]      Running compiles...
-[deadcode]      Running deadcode...
 [errcheck]      Running errcheck...
+[deadcode]      Running deadcode...
+[extimport]     Running extimport...
 [extimport]     Finished extimport
 [golint]        Running golint...
 [golint]        Finished golint
@@ -252,14 +252,14 @@ reported:
 [novendor]      Running novendor...
 [novendor]      Finished novendor
 [outparamcheck] Running outparamcheck...
-[errcheck]      Finished errcheck
+[compiles]      Finished compiles
 [unconvert]     Running unconvert...
 [deadcode]      Finished deadcode
 [varcheck]      Running varcheck...
+[errcheck]      Finished errcheck
 [outparamcheck] Finished outparamcheck
-[compiles]      Finished compiles
-[unconvert]     Finished unconvert
 [varcheck]      Finished varcheck
+[unconvert]     Finished unconvert
 ```
 
 Revert the local changes by running the following:
@@ -269,33 +269,40 @@ Revert the local changes by running the following:
 ```
 
 Filters have a `type` and a `value`. When `type` is not specified (as in the examples above), it defaults to `message`,
-which means that the value is matched against the message of the output. The `type` field for filters can also be `name`
-or `path`. `name` matches files based on their name, while `path` matches based on an exact relative path.
+which means that the value is matched against the message of the output. Currently, `message` is the only filter.
+
+### Exclude specific file names or paths from a check
+Checks have an optional `exclude` field that can be used to specify names or paths of files that should be excluded from
+the check.
 
 For example, the following configuration will ignore all issues reported by `errcheck` for `main.go`:
 
 ```yaml
 checks:
   errcheck:
-    filters:
-      - type: "path"
-        value: "main.go"
+    exclude:
+      paths:
+        - main.go
 ```
 
-Because the `type` above is `path`, this configuration would ignore `errcheck` issues in `./main.go`. However, issues in
+Because the exclude type is `path`, this configuration would ignore `errcheck` issues in `./main.go`. However, issues in
 other files named `main.go` in the project (for example, `./subproject/main.go`) would still be reported. Setting the
-`type` to `name` would change the behavior so that issues in all files named `main.go` would be ignored.
+exclude type to `names` would change the behavior so that issues in all files named `main.go` would be ignored. Both
+`names` and `paths` can be specified in the same `exclude` configuration.
 
-The match values use Go regular expressions to perform matches. For example, the following configuration ignores all
-`golint` issues reported for any files that have the extension `.pb.go`:
+The name match values use Go regular expressions to perform matches. For example, the following configuration ignores
+all `golint` issues reported for any files that have the extension `.pb.go`:
 
 ```yaml
 checks:
   golint:
-    filters:
-      - type: "name"
-        value: ".*.pb.go"
+    exclude:
+      names:
+        - ".*.pb.go"
 ```
+
+The `checks` configuration also supports specifying `exclude` as a top-level value that applies to all checks (rather
+than just an individual one).
 
 ### Disable checks
 Checks can be disabled completely for the entire project by setting the `skip` field to `true`.
@@ -312,9 +319,9 @@ Run `./godelw check` with the updated configuration to verify that the `golint` 
 
 ```
 ➜ ./godelw check
-[deadcode]      Running deadcode...
 [compiles]      Running compiles...
 [extimport]     Running extimport...
+[deadcode]      Running deadcode...
 [errcheck]      Running errcheck...
 [extimport]     Finished extimport
 [govet]         Running govet...
@@ -328,9 +335,9 @@ Run `./godelw check` with the updated configuration to verify that the `golint` 
 [outparamcheck] Running outparamcheck...
 [deadcode]      Finished deadcode
 [unconvert]     Running unconvert...
-[errcheck]      Finished errcheck
-[varcheck]      Running varcheck...
 [compiles]      Finished compiles
+[varcheck]      Running varcheck...
+[errcheck]      Finished errcheck
 [outparamcheck] Finished outparamcheck
 [unconvert]     Finished unconvert
 [varcheck]      Finished varcheck
@@ -355,8 +362,8 @@ For example, the following runs only `deadcode` and `govet`:
 
 ```
 ➜ ./godelw check deadcode govet
-[deadcode] Running deadcode...
 [govet]    Running govet...
+[deadcode] Running deadcode...
 [govet]    Finished govet
 [deadcode] Finished deadcode
 ```
@@ -376,7 +383,7 @@ For example, `errcheck` can be invoked directly as follows:
 
 ```
 ➜ ./godelw run-check errcheck -- --help
-Usage of /root/.godel/assets/com.palantir.godel-okgo-asset-errcheck-errcheck-asset-1.0.0-rc2:
+Usage of /root/.godel/assets/com.palantir.godel-okgo-asset-errcheck-errcheck-asset-1.1.1:
   -abspath
     	print absolute paths to files
   -asserts
@@ -486,7 +493,7 @@ For example, we can add the [nobadfuncs check](https://github.com/palantir/go-no
     com.palantir.okgo:check-plugin:
       assets:
         - locator:
-            id: "com.palantir.godel-okgo-asset-nobadfuncs:nobadfuncs-asset:1.0.0-rc2"
+            id: "com.palantir.godel-okgo-asset-nobadfuncs:nobadfuncs-asset:1.0.0"
 exclude:
   names:
     - "\\\\..+"
@@ -499,8 +506,8 @@ This adds the asset, which makes it available as a check:
 
 ```
 ➜ ./godelw check nobadfuncs
-Getting package from https://palantir.bintray.com/releases/com/palantir/godel-okgo-asset-nobadfuncs/nobadfuncs-asset/1.0.0-rc2/nobadfuncs-asset-1.0.0-rc2-linux-amd64.tgz...
- 3.80 MiB / 3.80 MiB  100.00% 1s
+Getting package from https://palantir.bintray.com/releases/com/palantir/godel-okgo-asset-nobadfuncs/nobadfuncs-asset/1.0.0/nobadfuncs-asset-1.0.0-linux-amd64.tgz...
+ 0 B / 3.80 MiB    0.00% 670.23 KiB / 3.80 MiB   17.23% 1.15 MiB / 3.80 MiB   30.38% 1.50 MiB / 3.80 MiB   39.49% 1.69 MiB / 3.80 MiB   44.60% 1s 1.75 MiB / 3.80 MiB   46.07% 1s 2.03 MiB / 3.80 MiB   53.46% 1s 2.98 MiB / 3.80 MiB   78.53% 3.80 MiB / 3.80 MiB  100.00% 1s
 Running nobadfuncs...
 Finished nobadfuncs
 ```
