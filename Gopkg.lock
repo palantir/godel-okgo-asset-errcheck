@@ -97,6 +97,7 @@
   version = "1.3.0"
 
 [[projects]]
+  branch = "master"
   name = "github.com/palantir/godel"
   packages = [
     "framework/artifactresolver",
@@ -125,8 +126,7 @@
     "pkg/products/v2/products",
     "pkg/versionedconfig",
   ]
-  revision = "c84c8364bb86cadfda2d76c6a1fa00ccbe359967"
-  version = "v2.10.0"
+  revision = "6ef6fc2811e260af0641aae25a45881217b3cf3d"
 
 [[projects]]
   name = "github.com/palantir/okgo"
@@ -135,8 +135,8 @@
     "okgo",
     "okgotester",
   ]
-  revision = "9053a89bb5dfa52dc6e5aecc63072d39d77e5609"
-  version = "v1.2.1"
+  revision = "32725b197ce491268c43f7036aa702bb99dac21c"
+  version = "v1.0.0"
 
 [[projects]]
   branch = "master"
@@ -231,6 +231,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "644d0eea053ac9542a61416f61a4b8fab5612daaec51b16fde55bce12ade9b74"
+  inputs-digest = "f61167a81c9bb2c72083bb8379400dc5d0effb38d9fab35cc96b9597623dac88"
   solver-name = "gps-cdcl"
   solver-version = 1

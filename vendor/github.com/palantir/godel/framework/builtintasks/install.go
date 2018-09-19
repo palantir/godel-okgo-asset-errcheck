@@ -26,7 +26,6 @@ import (
 func InstallTask() godellauncher.Task {
 	var (
 		globalCfg                godellauncher.GlobalConfig
-		checksumFlagVal          string
 		skipUpgradeConfigFlagVal bool
 	)
 
@@ -45,7 +44,7 @@ func InstallTask() godellauncher.Task {
 				projectDir,
 				skipUpgradeConfigFlagVal,
 				func() error {
-					return installupdate.NewInstall(projectDir, godelgetter.NewPkgSrc(args[0], checksumFlagVal), cmd.OutOrStdout())
+					return installupdate.NewInstall(projectDir, godelgetter.NewPkgSrc(args[0], ""), cmd.OutOrStdout())
 				},
 				cmd.OutOrStdout(),
 				cmd.OutOrStderr(),
@@ -53,7 +52,6 @@ func InstallTask() godellauncher.Task {
 		},
 	}
 	cmd.Flags().BoolVar(&skipUpgradeConfigFlagVal, "skip-upgrade-config", false, "skips running configuration upgrade tasks after installation")
-	cmd.Flags().StringVar(&checksumFlagVal, "checksum", "", "expected checksum for package")
 
 	return godellauncher.CobraCLITask(cmd, &globalCfg)
 }

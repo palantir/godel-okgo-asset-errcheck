@@ -77,7 +77,8 @@ func UpgradeConfig(cfgBytes []byte, factory okgo.CheckerFactory) ([]byte, error)
 func upgradeLegacyConfig(legacyCfg ProjectConfig, factory okgo.CheckerFactory) (*v0.ProjectConfig, error) {
 	// upgrade top-level configuration
 	upgradedCfg := v0.ProjectConfig{
-		Exclude: legacyCfg.Exclude,
+		ReleaseTag: legacyCfg.ReleaseTag,
+		Exclude:    legacyCfg.Exclude,
 	}
 
 	// delegate to asset upgraders

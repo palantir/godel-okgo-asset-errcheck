@@ -50,13 +50,28 @@ func TestMarshalConfig(t *testing.T) {
 	got, err := yaml.Marshal(cfg)
 	require.NoError(t, err)
 
-	want := `plugins:
+	want := `version: ""
+tasks-config-providers:
+  resolvers: []
+  providers: []
+default-tasks:
+  resolvers: []
+  tasks: {}
+plugins:
+  resolvers: []
   plugins:
   - locator:
       id: com.palantir:plugin:1.0.0
+      checksums: {}
+    resolver: ""
     assets:
     - locator:
         id: com.palantir:asset:1.0.0
+        checksums: {}
+      resolver: ""
+exclude:
+  names: []
+  paths: []
 `
 	assert.Equal(t, want, string(got))
 }

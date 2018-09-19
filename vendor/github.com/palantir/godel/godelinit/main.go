@@ -17,9 +17,10 @@ package main
 import (
 	"os"
 
-	"github.com/palantir/godel/godelinit/cmd"
+	"github.com/palantir/pkg/cobracli"
 )
 
 func main() {
-	os.Exit(cmd.Execute())
+	var debug bool
+	os.Exit(cobracli.ExecuteWithDefaultParamsWithVersion(rootCmd(), &debug, ""))
 }

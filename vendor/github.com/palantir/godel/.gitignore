@@ -2,4 +2,6 @@
 *.ipr
 *.iws
 .idea/
-/out/
+/build
+/dist
+tmp_placeholder_test.go

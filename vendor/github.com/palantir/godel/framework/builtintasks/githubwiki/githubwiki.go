@@ -225,5 +225,9 @@ func SyncGitHubWiki(p Params, stdout io.Writer) error {
 	}
 
 	fmt.Fprintf(stdout, "Pushing content of %s to %s...\n", p.DocsDir, p.Repo)
-	return g.push()
+	if err := g.push(); err != nil {
+		return err
+	}
+
+	return nil
 }

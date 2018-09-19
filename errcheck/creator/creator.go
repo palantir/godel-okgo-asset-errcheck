@@ -35,10 +35,6 @@ import (
 
 var lineRegexp = regexp.MustCompile(`(.+):(\d+):(\d+):\t(.+)`)
 
-func init() {
-	checker.SetGoBuildDefaultReleaseTags()
-}
-
 func Errcheck() checker.Creator {
 	return checker.NewCreator(
 		errcheck.TypeName,

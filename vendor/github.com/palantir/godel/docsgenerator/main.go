@@ -17,9 +17,11 @@ package main
 import (
 	"os"
 
+	"github.com/palantir/pkg/cobracli"
+
 	"github.com/palantir/godel/docsgenerator/cmd"
 )
 
 func main() {
-	os.Exit(cmd.Execute())
+	os.Exit(cobracli.ExecuteWithDefaultParamsWithVersion(cmd.RootCmd, nil, ""))
 }
