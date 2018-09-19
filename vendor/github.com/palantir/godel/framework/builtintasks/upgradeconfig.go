@@ -40,14 +40,12 @@ func UpgradeConfigTask(upgradeTasks []godellauncher.UpgradeConfigTask) godellaun
 		dryRunFlagName       = "dry-run"
 		printContentFlagName = "print-content"
 		legacyFlagName       = "legacy"
-		backupFlagName       = "backup"
 	)
 
 	var (
 		dryRunFlagVal       bool
 		printContentFlagVal bool
 		legacyFlagVal       bool
-		backupFlagVal       bool
 	)
 
 	cmd := &cobra.Command{
@@ -58,7 +56,6 @@ func UpgradeConfigTask(upgradeTasks []godellauncher.UpgradeConfigTask) godellaun
 	cmd.Flags().BoolVar(&dryRunFlagVal, dryRunFlagName, false, "print what the upgrade operation would do without writing changes")
 	cmd.Flags().BoolVar(&printContentFlagVal, printContentFlagName, false, "print the content of the changes to stdout in addition to writing them")
 	cmd.Flags().BoolVar(&legacyFlagVal, legacyFlagName, false, "upgrade pre-2.0 legacy configuration")
-	cmd.Flags().BoolVar(&backupFlagVal, backupFlagName, false, "back up files before overwriting or removing them")
 
 	cmd.SilenceErrors = true
 	cmd.SilenceUsage = true
@@ -81,9 +78,9 @@ func UpgradeConfigTask(upgradeTasks []godellauncher.UpgradeConfigTask) godellaun
 					return err
 				}
 				if legacyFlagVal {
-					return runUpgradeLegacyConfig(upgradeTasks, global, projectDir, configDirPath, backupFlagVal, dryRunFlagVal, printContentFlagVal, cmd.OutOrStdout())
+					return runUpgradeLegacyConfig(upgradeTasks, global, projectDir, configDirPath, dryRunFlagVal, printContentFlagVal, cmd.OutOrStdout())
 				}
-				return runUpgradeConfig(upgradeTasks, global, projectDir, configDirPath, backupFlagVal, dryRunFlagVal, printContentFlagVal, cmd.OutOrStdout())
+				return runUpgradeConfig(upgradeTasks, global, projectDir, configDirPath, dryRunFlagVal, printContentFlagVal, cmd.OutOrStdout())
 			}
 
 			rootCmd := godellauncher.CobraCmdToRootCmd(cmd)
@@ -97,13 +94,13 @@ func runUpgradeConfig(
 	upgradeTasks []godellauncher.UpgradeConfigTask,
 	global godellauncher.GlobalConfig,
 	projectDir, configDirPath string,
-	backup, dryRun, printContent bool,
+	dryRun, printContent bool,
 	stdout io.Writer,
 ) error {
 
 	var failedUpgrades []string
 	for _, upgradeTask := range upgradeTasks {
-		changed, upgradedCfgBytes, err := upgradeConfigFile(upgradeTask, global, configDirPath, backup, dryRun, stdout)
+		changed, upgradedCfgBytes, err := upgradeConfigFile(upgradeTask, global, configDirPath, dryRun, stdout)
 		if err != nil {
 			failedUpgrades = append(failedUpgrades, upgradeError(projectDir, path.Join(configDirPath, upgradeTask.ConfigFile), err))
 			continue
@@ -146,7 +143,7 @@ func printUpgradedConfig(cfgFile string, upgradedCfgBytes []byte, dryRun, printC
 	dryRunPrintln(stdout, dryRun, "---")
 }
 
-func upgradeConfigFile(task godellauncher.UpgradeConfigTask, global godellauncher.GlobalConfig, configDir string, backup, dryRun bool, stdout io.Writer) (bool, []byte, error) {
+func upgradeConfigFile(task godellauncher.UpgradeConfigTask, global godellauncher.GlobalConfig, configDir string, dryRun bool, stdout io.Writer) (bool, []byte, error) {
 	configFile := path.Join(configDir, task.ConfigFile)
 	origConfigBytes, err := ioutil.ReadFile(configFile)
 	if err != nil {
@@ -160,10 +157,8 @@ func upgradeConfigFile(task godellauncher.UpgradeConfigTask, global godellaunche
 		return false, nil, nil
 	}
 
-	if backup {
-		if err := backupConfigFile(configFile, dryRun, stdout); err != nil {
-			return false, nil, err
-		}
+	if err := backupConfigFile(configFile, dryRun, stdout); err != nil {
+		return false, nil, err
 	}
 	if !dryRun {
 		if err := ioutil.WriteFile(configFile, upgradedConfigBytes, 0644); err != nil {
@@ -203,22 +198,6 @@ func backupConfigFile(cfgFilePath string, dryRun bool, stdout io.Writer) error {
 	return nil
 }
 
-func removeConfigFile(cfgFilePath string, dryRun bool, stdout io.Writer) error {
-	// if file does not exist, nothing to do
-	if _, err := os.Stat(cfgFilePath); os.IsNotExist(err) {
-		return nil
-	}
-	// remove file or print operation
-	if dryRun {
-		dryRunPrintln(stdout, dryRun, fmt.Sprintf("Run: rm %s", cfgFilePath))
-		return nil
-	}
-	if err := os.Remove(cfgFilePath); err != nil {
-		return errors.Wrapf(err, "failed to remove configuration file %s", cfgFilePath)
-	}
-	return nil
-}
-
 func upgradeError(projectDir, configFilePath string, upgradeErr error) string {
 	// convert path to relative path if it is absolute. No-op if conversion to absolute path fails.
 	if filepath.IsAbs(configFilePath) {
@@ -233,7 +212,7 @@ func runUpgradeLegacyConfig(
 	upgradeTasks []godellauncher.UpgradeConfigTask,
 	global godellauncher.GlobalConfig,
 	projectDir, configDirPath string,
-	backup, dryRun, printContent bool,
+	dryRun, printContent bool,
 	stdout io.Writer,
 ) error {
 
@@ -253,7 +232,7 @@ func runUpgradeLegacyConfig(
 	var failedUpgrades []string
 	// perform hard-coded one-time upgrades
 	for _, currUpgrader := range hardCodedLegacyUpgraders {
-		if err := currUpgrader.upgradeConfig(configDirPath, backup, dryRun, printContent, stdout); err != nil {
+		if err := currUpgrader.upgradeConfig(configDirPath, dryRun, printContent, stdout); err != nil {
 			failedUpgrades = append(failedUpgrades, upgradeError(projectDir, path.Join(configDirPath, currUpgrader.configFileName()), err))
 		}
 		knownConfigFiles[currUpgrader.configFileName()] = struct{}{}
@@ -277,7 +256,7 @@ func runUpgradeLegacyConfig(
 			continue
 		}
 		knownConfigFiles[upgradeTask.LegacyConfigFile] = struct{}{}
-		if err := upgradeLegacyConfig(upgradeTask, configDirPath, global, backup, dryRun, printContent, stdout); err != nil {
+		if err := upgradeLegacyConfig(upgradeTask, configDirPath, global, dryRun, printContent, stdout); err != nil {
 			failedUpgrades = append(failedUpgrades, upgradeError(projectDir, path.Join(configDirPath, upgradeTask.ConfigFile), err))
 			continue
 		}
@@ -290,7 +269,7 @@ func runUpgradeLegacyConfig(
 		}
 		unhandledYMLFiles = append(unhandledYMLFiles, k)
 	}
-	if err := processUnhandledYMLFiles(configDirPath, unhandledYMLFiles, backup, dryRun, stdout); err != nil {
+	if err := processUnhandledYMLFiles(configDirPath, unhandledYMLFiles, dryRun, stdout); err != nil {
 		return err
 	}
 
@@ -307,7 +286,7 @@ func runUpgradeLegacyConfig(
 var hardCodedLegacyUpgraders = []hardCodedLegacyUpgrader{
 	&hardCodedLegacyUpgraderImpl{
 		fileName: "exclude.yml",
-		upgradeConfigFn: func(configDirPath string, backup, dryRun, printContent bool, stdout io.Writer) error {
+		upgradeConfigFn: func(configDirPath string, dryRun, printContent bool, stdout io.Writer) error {
 			// godel.yml itself is compatible. Only work to be performed is if "exclude.yml" exists and contains entries
 			// that differ from godel.yml.
 			legacyExcludeFilePath := path.Join(configDirPath, "exclude.yml")
@@ -354,16 +333,9 @@ var hardCodedLegacyUpgraders = []hardCodedLegacyUpgrader{
 				modified = true
 			}
 
-			if backup {
-				// back up old configuration by moving it
-				if err := backupConfigFile(legacyExcludeFilePath, dryRun, stdout); err != nil {
-					return errors.Wrapf(err, "failed to back up legacy configuration file")
-				}
-			} else {
-				// remove old configuration file
-				if err := removeConfigFile(legacyExcludeFilePath, dryRun, stdout); err != nil {
-					return errors.Wrapf(err, "failed to remove legacy configuration file")
-				}
+			// back up old configuration by moving it
+			if err := backupConfigFile(legacyExcludeFilePath, dryRun, stdout); err != nil {
+				return errors.Wrapf(err, "failed to back up legacy configuration file")
 			}
 
 			if !modified {
@@ -377,11 +349,9 @@ var hardCodedLegacyUpgraders = []hardCodedLegacyUpgrader{
 			}
 
 			godelYMLPath := path.Join(configDirPath, "godel.yml")
-			if backup {
-				// back up godel.yml because it is about to be overwritten
-				if err := backupConfigFile(godelYMLPath, dryRun, stdout); err != nil {
-					return errors.Wrapf(err, "failed to back up godel.yml")
-				}
+			// back up godel.yml because it is about to be overwritten
+			if err := backupConfigFile(godelYMLPath, dryRun, stdout); err != nil {
+				return errors.Wrapf(err, "failed to back up godel.yml")
 			}
 			if !dryRun {
 				// write migrated configuration
@@ -414,23 +384,23 @@ func dirYMLFiles(inputDir string) ([]string, error) {
 
 type hardCodedLegacyUpgrader interface {
 	configFileName() string
-	upgradeConfig(configDirPath string, backup, dryRun, printContent bool, stdout io.Writer) error
+	upgradeConfig(configDirPath string, dryRun, printContent bool, stdout io.Writer) error
 }
 
 type hardCodedLegacyUpgraderImpl struct {
 	fileName        string
-	upgradeConfigFn func(configDirPath string, backup, dryRun, printContent bool, stdout io.Writer) error
+	upgradeConfigFn func(configDirPath string, dryRun, printContent bool, stdout io.Writer) error
 }
 
 func (u *hardCodedLegacyUpgraderImpl) configFileName() string {
 	return u.fileName
 }
 
-func (u *hardCodedLegacyUpgraderImpl) upgradeConfig(configDirPath string, backup, dryRun, printContent bool, stdout io.Writer) error {
-	return u.upgradeConfigFn(configDirPath, backup, dryRun, printContent, stdout)
+func (u *hardCodedLegacyUpgraderImpl) upgradeConfig(configDirPath string, dryRun, printContent bool, stdout io.Writer) error {
+	return u.upgradeConfigFn(configDirPath, dryRun, printContent, stdout)
 }
 
-func upgradeLegacyConfig(upgradeTask godellauncher.UpgradeConfigTask, configDirPath string, global godellauncher.GlobalConfig, backup, dryRun, printContent bool, stdout io.Writer) error {
+func upgradeLegacyConfig(upgradeTask godellauncher.UpgradeConfigTask, configDirPath string, global godellauncher.GlobalConfig, dryRun, printContent bool, stdout io.Writer) error {
 	legacyConfigFilePath := path.Join(configDirPath, upgradeTask.LegacyConfigFile)
 	if _, err := os.Stat(legacyConfigFilePath); os.IsNotExist(err) {
 		// if legacy file does not exist, there is no upgrade to be performed
@@ -457,24 +427,15 @@ func upgradeLegacyConfig(upgradeTask godellauncher.UpgradeConfigTask, configDirP
 		return errors.Wrapf(err, "failed to upgrade configuration")
 	}
 
-	if backup {
-		// back up old configuration
-		if err := backupConfigFile(legacyConfigFilePath, dryRun, stdout); err != nil {
-			return errors.Wrapf(err, "failed to back up legacy configuration file")
-		}
-	} else {
-		// remove old configuration
-		if err := removeConfigFile(legacyConfigFilePath, dryRun, stdout); err != nil {
-			return errors.Wrapf(err, "failed to remove legacy configuration file")
-		}
+	// back up old configuration
+	if err := backupConfigFile(legacyConfigFilePath, dryRun, stdout); err != nil {
+		return errors.Wrapf(err, "failed to back up legacy configuration file")
 	}
 
+	// back up destination file if it already exists
 	dstFilePath := path.Join(configDirPath, upgradeTask.ConfigFile)
-	if backup {
-		// back up destination file if it already exists
-		if err := backupConfigFile(dstFilePath, dryRun, stdout); err != nil {
-			return errors.Wrapf(err, "failed to back up existing configuration file")
-		}
+	if err := backupConfigFile(dstFilePath, dryRun, stdout); err != nil {
+		return errors.Wrapf(err, "failed to back up existing configuration file")
 	}
 
 	// upgraded configuration is empty: no need to write
@@ -492,7 +453,7 @@ func upgradeLegacyConfig(upgradeTask godellauncher.UpgradeConfigTask, configDirP
 	return nil
 }
 
-func processUnhandledYMLFiles(configDir string, unknownYMLFiles []string, backup, dryRun bool, stdout io.Writer) error {
+func processUnhandledYMLFiles(configDir string, unknownYMLFiles []string, dryRun bool, stdout io.Writer) error {
 	if len(unknownYMLFiles) == 0 {
 		return nil
 	}
@@ -504,16 +465,10 @@ func processUnhandledYMLFiles(configDir string, unknownYMLFiles []string, backup
 		if err != nil {
 			return errors.Wrapf(err, "failed to read configuration file")
 		}
-		// if unknown file is empty, just remove it or back it up
+		// if unknown file is empty, just back it up
 		if string(bytes) == "" {
-			if backup {
-				if err := backupConfigFile(currPath, dryRun, stdout); err != nil {
-					return err
-				}
-			} else {
-				if err := removeConfigFile(currPath, dryRun, stdout); err != nil {
-					return err
-				}
+			if err := backupConfigFile(currPath, dryRun, stdout); err != nil {
+				return err
 			}
 			continue
 		}

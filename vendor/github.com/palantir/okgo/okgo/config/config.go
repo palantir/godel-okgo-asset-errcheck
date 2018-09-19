@@ -55,7 +55,8 @@ func (c *ProjectConfig) ToParam(factory okgo.CheckerFactory) (okgo.ProjectParam,
 	}
 
 	return okgo.ProjectParam{
-		Checks: checks,
+		ReleaseTag: c.ReleaseTag,
+		Checks:     checks,
 	}, nil
 }
 

@@ -13,7 +13,6 @@ Tutorial start state
 * Project is tagged as 0.0.1
 * `godel/config/dist-plugin.yml` is configured to create distributions for `echgo`
 * Project is tagged as 0.0.2
-* `dockerctx` directory exists and `godel/config/dist-plugin.yml` is configured to build Docker images for the product
 * Go files have license headers
 * `godel/config/godel.yml` is configured to add the go-generate plugin
 * `godel/config/generate-plugin.yml` is configured to generate string function
@@ -55,7 +54,6 @@ Tutorial end state
 * Project is tagged as 0.0.1
 * `godel/config/dist-plugin.yml` is configured to create distributions for `echgo`
 * Project is tagged as 0.0.2
-* `dockerctx` directory exists and `godel/config/dist-plugin.yml` is configured to build Docker images for the product
 * Go files have license headers
 * `godel/config/godel.yml` is configured to add the go-generate plugin
 * `godel/config/generate-plugin.yml` is configured to generate string function
@@ -69,7 +67,7 @@ Tutorial end state
 
 Tutorial next step
 ------------------
-[Update legacy gödel](https://github.com/palantir/godel/wiki/Update-legacy-godel)
+[Other commands](https://github.com/palantir/godel/wiki/Other-commands)
 
 More
 ----

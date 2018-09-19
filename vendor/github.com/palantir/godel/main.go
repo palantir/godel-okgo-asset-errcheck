@@ -68,15 +68,13 @@ func runGodelApp(osArgs []string) int {
 		if err != nil {
 			printErrAndExit(err, global.Debug)
 		}
-		tasksConfig := config.TasksConfig{}
-		// add resolved configurations
+		// combine base configuration with resolved configurations
+		tasksConfig := config.TasksConfig(godelCfg.TasksConfig)
 		tasksConfig.Combine(providedConfigs...)
-		// add configuration specified in config file (overrides any provided config)
-		tasksConfig.Combine(config.TasksConfig(godelCfg.TasksConfig))
-		tasksCfgInfo.TasksConfig = tasksConfig
+		tasksCfgInfo.TasksConfig = config.TasksConfig(godelCfg.TasksConfig)
 
 		// add default tasks
-		defaultTasksCfg, err := defaulttasks.PluginsConfig(config.DefaultTasksConfig(tasksConfig.DefaultTasks))
+		defaultTasksCfg, err := defaulttasks.PluginsConfig(config.DefaultTasksConfig(godelCfg.DefaultTasks))
 		if err != nil {
 			printErrAndExit(err, global.Debug)
 		}
@@ -94,7 +92,7 @@ func runGodelApp(osArgs []string) int {
 		}
 
 		// add tasks provided by plugins
-		pluginsCfg := config.PluginsConfig(tasksConfig.Plugins)
+		pluginsCfg := config.PluginsConfig(godelCfg.Plugins)
 		pluginsParam, err := pluginsCfg.ToParam()
 		if err != nil {
 			printErrAndExit(err, global.Debug)
@@ -104,11 +102,11 @@ func runGodelApp(osArgs []string) int {
 			printErrAndExit(err, global.Debug)
 		}
 
-		if len(defaultTasksCfg.Plugins) != 0 && len(tasksConfig.Plugins.Plugins) != 0 {
+		if len(defaultTasksCfg.Plugins) != 0 && len(godelCfg.Plugins.Plugins) != 0 {
 			// verify that there are no conflicts
-			combinedCfg := config.PluginsConfig(tasksConfig.Plugins)
-			combinedCfg.DefaultResolvers = append(combinedCfg.DefaultResolvers, tasksConfig.Plugins.DefaultResolvers...)
-			combinedCfg.Plugins = append(combinedCfg.Plugins, tasksConfig.Plugins.Plugins...)
+			combinedCfg := config.PluginsConfig(godelCfg.Plugins)
+			combinedCfg.DefaultResolvers = append(combinedCfg.DefaultResolvers, godelCfg.Plugins.DefaultResolvers...)
+			combinedCfg.Plugins = append(combinedCfg.Plugins, godelCfg.Plugins.Plugins...)
 			combinedParam, err := combinedCfg.ToParam()
 			if err != nil {
 				printErrAndExit(err, global.Debug)

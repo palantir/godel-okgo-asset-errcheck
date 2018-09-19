@@ -13,7 +13,6 @@ Tutorial start state
 * Project is tagged as 0.0.1
 * `godel/config/dist-plugin.yml` is configured to create distributions for `echgo`
 * Project is tagged as 0.0.2
-* `dockerctx` directory exists and `godel/config/dist-plugin.yml` is configured to build Docker images for the product
 * Go files have license headers
 * `godel/config/godel.yml` is configured to add the go-generate plugin
 * `godel/config/generate-plugin.yml` is configured to generate string function
@@ -33,7 +32,7 @@ Run the following to create a "docs" directory and add some documentation and co
 ➜ echo 'echgo2 is a tool that echoes the input provided by the user.' > docs/Home.md
 ➜ git add docs
 ➜ git commit -m "Add documentation"
-[master c469655] Add documentation
+[master 28e4ae0] Add documentation
  2 files changed, 2 insertions(+)
  create mode 100644 docs/Home.md
  create mode 100644 docs/_Sidebar.md
@@ -66,7 +65,6 @@ Tutorial end state
 * Project is tagged as 0.0.1
 * `godel/config/dist-plugin.yml` is configured to create distributions for `echgo`
 * Project is tagged as 0.0.2
-* `dockerctx` directory exists and `godel/config/dist-plugin.yml` is configured to build Docker images for the product
 * Go files have license headers
 * `godel/config/godel.yml` is configured to add the go-generate plugin
 * `godel/config/generate-plugin.yml` is configured to generate string function
