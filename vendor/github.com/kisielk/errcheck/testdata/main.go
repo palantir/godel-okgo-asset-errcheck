@@ -2,6 +2,7 @@ package main
 
 import (
 	"bytes"
+	"crypto/sha256"
 	"fmt"
 	"io/ioutil"
 	"math/rand"
@@ -9,17 +10,17 @@ import (
 )
 
 func a() error {
-	fmt.Println("this function returns an error") // UNCHECKED
+	fmt.Println("this function returns an error") // EXCLUDED
 	return nil
 }
 
 func b() (int, error) {
-	fmt.Println("this function returns an int and an error") // UNCHECKED
+	fmt.Println("this function returns an int and an error") // EXCLUDED
 	return 0, nil
 }
 
 func c() int {
-	fmt.Println("this function returns an int") // UNCHECKED
+	fmt.Println("this function returns an int") // EXCLUDED
 	return 7
 }
 
@@ -63,6 +64,14 @@ func customPointerError() *MyPointerError {
 func customPointerErrorTuple() (int, *MyPointerError) {
 	e := MyPointerError("an error occurred")
 	return 0, &e
+}
+
+// Test custom excludes
+type ErrorMakerInterface interface {
+	MakeNilError() error
+}
+type ErrorMakerInterfaceWrapper interface {
+	ErrorMakerInterface
 }
 
 func main() {
@@ -137,6 +146,10 @@ func main() {
 	b2.Write(nil)
 	rand.Read(nil)
 	mrand.Read(nil)
+	sha256.New().Write([]byte{})
 
 	ioutil.ReadFile("main.go") // UNCHECKED
+
+	var emiw ErrorMakerInterfaceWrapper
+	emiw.MakeNilError()
 }

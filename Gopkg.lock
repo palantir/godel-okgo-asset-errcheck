@@ -50,8 +50,8 @@
     ".",
     "internal/errcheck",
   ]
-  revision = "4f638ae6fe63ac7e89149052aaa2ac1ae3ec5111"
-  version = "v1.0.0"
+  revision = "55d8f507faff4d6eddd0c41a3e713e2567fca4e5"
+  version = "v1.1.0"
 
 [[projects]]
   name = "github.com/kisielk/gotool"
