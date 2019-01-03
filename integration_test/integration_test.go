@@ -99,10 +99,10 @@ func Foo() {
 					"godel/config/godel.yml": godelYML,
 					"godel/config/check-plugin.yml": `
 checks:
-  errcheck:
-    config:
-      ignore:
-        - os:Getwd
+ errcheck:
+   config:
+     ignore:
+       - os:Getwd
 `,
 				},
 				WantOutput: `Running errcheck...
@@ -128,10 +128,10 @@ func Foo() {
 					"godel/config/godel.yml": godelYML,
 					"godel/config/check-plugin.yml": `
 checks:
-  errcheck:
-    config:
-      exclude:
-        - os.Getwd
+ errcheck:
+   config:
+     exclude:
+       - os.Getwd
 `,
 				},
 				WantOutput: `Running errcheck...

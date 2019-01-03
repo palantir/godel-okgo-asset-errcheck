@@ -24,11 +24,7 @@ required = ["github.com/kisielk/errcheck"]
 
 [[constraint]]
   name = "github.com/kisielk/errcheck"
-  version = "1.0.0"
-
-[[constraint]]
-  name = "github.com/kisielk/gotool"
-  version = "1.0.0"
+  version = "1.2.0"
 
 [[constraint]]
   name = "github.com/palantir/amalgomate"

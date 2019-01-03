@@ -2,9 +2,6 @@ package errcheck
 
 import (
 	"fmt"
-	"go/build"
-	"go/parser"
-	"go/token"
 	"io/ioutil"
 	"os"
 	"path"
@@ -12,6 +9,8 @@ import (
 	"runtime"
 	"strings"
 	"testing"
+
+	"golang.org/x/tools/go/packages"
 )
 
 const testPackage = "github.com/kisielk/errcheck/testdata"
@@ -40,28 +39,28 @@ func init() {
 	blankMarkers = make(map[marker]bool)
 	assertMarkers = make(map[marker]bool)
 
-	pkg, err := build.Import(testPackage, "", 0)
+	cfg := &packages.Config{
+		Mode:  packages.LoadSyntax,
+		Tests: true,
+	}
+	pkgs, err := packages.Load(cfg, testPackage)
 	if err != nil {
 		panic("failed to import test package")
 	}
-	fset := token.NewFileSet()
-	astPkg, err := parser.ParseDir(fset, pkg.Dir, nil, parser.ParseComments)
-	if err != nil {
-		panic("failed to parse test package")
-	}
-
-	for _, file := range astPkg["main"].Files {
-		for _, comment := range file.Comments {
-			text := comment.Text()
-			pos := fset.Position(comment.Pos())
-			m := marker{pos.Filename, pos.Line}
-			switch text {
-			case "UNCHECKED\n":
-				uncheckedMarkers[m] = true
-			case "BLANK\n":
-				blankMarkers[m] = true
-			case "ASSERT\n":
-				assertMarkers[m] = true
+	for _, pkg := range pkgs {
+		for _, file := range pkg.Syntax {
+			for _, comment := range file.Comments {
+				text := comment.Text()
+				pos := pkg.Fset.Position(comment.Pos())
+				m := marker{pos.Filename, pos.Line}
+				switch text {
+				case "UNCHECKED\n":
+					uncheckedMarkers[m] = true
+				case "BLANK\n":
+					blankMarkers[m] = true
+				case "ASSERT\n":
+					assertMarkers[m] = true
+				}
 			}
 		}
 	}
@@ -89,11 +88,119 @@ func TestAll(t *testing.T) {
 	test(t, CheckAsserts|CheckBlank)
 }
 
+func TestBuildTags(t *testing.T) {
+	const (
+		// uses "custom1" build tag and contains 1 unchecked error
+		testBuildCustom1Tag = `
+` + `// +build custom1
+
+package custom
+
+import "fmt"
+
+func Print1() {
+	// returns an error that is not checked
+	fmt.Fprintln(nil)
+}`
+		// uses "custom2" build tag and contains 1 unchecked error
+		testBuildCustom2Tag = `
+` + `// +build custom2
+
+package custom
+
+import "fmt"
+
+func Print2() {
+	// returns an error that is not checked
+	fmt.Fprintln(nil)
+}`
+		// included so that package is not empty when built without specifying tags
+		testDoc = `
+// Package custom contains code for testing build tags.
+package custom
+`
+	)
+
+	tmpGopath, err := ioutil.TempDir("", "testbuildtags")
+	if err != nil {
+		t.Fatalf("unable to create testbuildtags directory: %v", err)
+	}
+	testBuildTagsDir := path.Join(tmpGopath, "src", "github.com/testbuildtags")
+	if err := os.MkdirAll(testBuildTagsDir, 0755); err != nil {
+		t.Fatalf("MkdirAll failed: %v", err)
+	}
+	defer func() {
+		os.RemoveAll(tmpGopath)
+	}()
+
+	if err := ioutil.WriteFile(path.Join(testBuildTagsDir, "custom1.go"), []byte(testBuildCustom1Tag), 0644); err != nil {
+		t.Fatalf("Failed to write testbuildtags custom1: %v", err)
+	}
+	if err := ioutil.WriteFile(path.Join(testBuildTagsDir, "custom2.go"), []byte(testBuildCustom2Tag), 0644); err != nil {
+		t.Fatalf("Failed to write testbuildtags custom2: %v", err)
+	}
+	if err := ioutil.WriteFile(path.Join(testBuildTagsDir, "doc.go"), []byte(testDoc), 0644); err != nil {
+		t.Fatalf("Failed to write testbuildtags doc: %v", err)
+	}
+
+	cases := []struct {
+		tags            []string
+		numExpectedErrs int
+	}{
+		// with no tags specified, main is ignored and there are no errors
+		{
+			tags:            nil,
+			numExpectedErrs: 0,
+		},
+		// specifying "custom1" tag includes file with 1 error
+		{
+			tags:            []string{"custom1"},
+			numExpectedErrs: 1,
+		},
+		// specifying "custom1" and "custom2" tags includes 2 files with 1 error each
+		{
+			tags:            []string{"custom1", "custom2"},
+			numExpectedErrs: 2,
+		},
+	}
+
+	for i, currCase := range cases {
+		checker := NewChecker()
+		checker.Tags = currCase.tags
+
+		loadPackages = func(cfg *packages.Config, paths ...string) ([]*packages.Package, error) {
+			cfg.Env = append(os.Environ(), "GOPATH="+tmpGopath)
+			cfg.Dir = testBuildTagsDir
+			pkgs, err := packages.Load(cfg, paths...)
+			return pkgs, err
+		}
+		err := checker.CheckPackages("github.com/testbuildtags")
+
+		if currCase.numExpectedErrs == 0 {
+			if err != nil {
+				t.Errorf("Case %d: expected no errors, but got: %v", i, err)
+			}
+			continue
+		}
+
+		uerr, ok := err.(*UncheckedErrors)
+		if !ok {
+			t.Errorf("Case %d: wrong error type returned: %v", i, err)
+			continue
+		}
+
+		if currCase.numExpectedErrs != len(uerr.Errors) {
+			t.Errorf("Case %d:\nExpected: %d errors\nActual:   %d errors", i, currCase.numExpectedErrs, len(uerr.Errors))
+		}
+	}
+}
+
 func TestWhitelist(t *testing.T) {
 
 }
 
-const testVendorMain = `
+func TestIgnore(t *testing.T) {
+	const testVendorMain = `
 	package main
 
 	import "github.com/testlog"
@@ -102,25 +209,30 @@ const testVendorMain = `
 		// returns an error that is not checked
 		testlog.Info()
 	}`
-const testLog = `
+	const testLog = `
 	package testlog
 
 	func Info() error {
 		return nil
 	}`
 
-func TestIgnore(t *testing.T) {
 	if strings.HasPrefix(runtime.Version(), "go1.5") && os.Getenv("GO15VENDOREXPERIMENT") != "1" {
 		// skip tests if running in go1.5 and vendoring is not enabled
 		t.SkipNow()
 	}
 
-	// copy testvendor directory into current directory for test
-	testVendorDir, err := ioutil.TempDir(".", "testvendor")
+	// copy testvendor directory into directory for test
+	tmpGopath, err := ioutil.TempDir("", "testvendor")
 	if err != nil {
 		t.Fatalf("unable to create testvendor directory: %v", err)
 	}
-	defer os.RemoveAll(testVendorDir)
+	testVendorDir := path.Join(tmpGopath, "src", "github.com/testvendor")
+	if err := os.MkdirAll(testVendorDir, 0755); err != nil {
+		t.Fatalf("MkdirAll failed: %v", err)
+	}
+	defer func() {
+		os.RemoveAll(tmpGopath)
+	}()
 
 	if err := ioutil.WriteFile(path.Join(testVendorDir, "main.go"), []byte(testVendorMain), 0755); err != nil {
 		t.Fatalf("Failed to write testvendor main: %v", err)
@@ -144,7 +256,7 @@ func TestIgnore(t *testing.T) {
 		// ignoring vendored import works
 		{
 			ignore: map[string]*regexp.Regexp{
-				path.Join("github.com/kisielk/errcheck/internal/errcheck", testVendorDir, "vendor/github.com/testlog"): regexp.MustCompile("Info"),
+				path.Join("github.com/testvendor/vendor/github.com/testlog"): regexp.MustCompile("Info"),
 			},
 		},
 		// non-vendored path ignores vendored import
@@ -158,7 +270,13 @@ func TestIgnore(t *testing.T) {
 	for i, currCase := range cases {
 		checker := NewChecker()
 		checker.Ignore = currCase.ignore
-		err := checker.CheckPackages(path.Join("github.com/kisielk/errcheck/internal/errcheck", testVendorDir))
+		loadPackages = func(cfg *packages.Config, paths ...string) ([]*packages.Package, error) {
+			cfg.Env = append(os.Environ(), "GOPATH="+tmpGopath)
+			cfg.Dir = testVendorDir
+			pkgs, err := packages.Load(cfg, paths...)
+			return pkgs, err
+		}
+		err := checker.CheckPackages("github.com/testvendor")
 
 		if currCase.numExpectedErrs == 0 {
 			if err != nil {
@@ -169,7 +287,99 @@ func TestIgnore(t *testing.T) {
 
 		uerr, ok := err.(*UncheckedErrors)
 		if !ok {
-			t.Errorf("Case %d: wrong error type returned", i)
+			t.Errorf("Case %d: wrong error type returned: %v", i, err)
+			continue
+		}
+
+		if currCase.numExpectedErrs != len(uerr.Errors) {
+			t.Errorf("Case %d:\nExpected: %d errors\nActual:   %d errors", i, currCase.numExpectedErrs, len(uerr.Errors))
+		}
+	}
+}
+
+func TestWithoutGeneratedCode(t *testing.T) {
+	const testVendorMain = `
+	// Code generated by protoc-gen-go. DO NOT EDIT.
+	package main
+
+	import "github.com/testlog"
+
+	func main() {
+		// returns an error that is not checked
+		testlog.Info()
+	}`
+	const testLog = `
+	package testlog
+
+	func Info() error {
+		return nil
+	}`
+
+	if strings.HasPrefix(runtime.Version(), "go1.5") && os.Getenv("GO15VENDOREXPERIMENT") != "1" {
+		// skip tests if running in go1.5 and vendoring is not enabled
+		t.SkipNow()
+	}
+
+	// copy testvendor directory into directory for test
+	tmpGopath, err := ioutil.TempDir("", "testvendor")
+	if err != nil {
+		t.Fatalf("unable to create testvendor directory: %v", err)
+	}
+	testVendorDir := path.Join(tmpGopath, "src", "github.com/testvendor")
+	if err := os.MkdirAll(testVendorDir, 0755); err != nil {
+		t.Fatalf("MkdirAll failed: %v", err)
+	}
+	defer func() {
+		os.RemoveAll(tmpGopath)
+	}()
+
+	if err := ioutil.WriteFile(path.Join(testVendorDir, "main.go"), []byte(testVendorMain), 0755); err != nil {
+		t.Fatalf("Failed to write testvendor main: %v", err)
+	}
+	if err := os.MkdirAll(path.Join(testVendorDir, "vendor/github.com/testlog"), 0755); err != nil {
+		t.Fatalf("MkdirAll failed: %v", err)
+	}
+	if err := ioutil.WriteFile(path.Join(testVendorDir, "vendor/github.com/testlog/testlog.go"), []byte(testLog), 0755); err != nil {
+		t.Fatalf("Failed to write testlog: %v", err)
+	}
+
+	cases := []struct {
+		withoutGeneratedCode bool
+		numExpectedErrs      int
+	}{
+		// basic case has one error
+		{
+			withoutGeneratedCode: false,
+			numExpectedErrs:      1,
+		},
+		// ignoring generated code works
+		{
+			withoutGeneratedCode: true,
+			numExpectedErrs:      0,
+		},
+	}
+
+	for i, currCase := range cases {
+		checker := NewChecker()
+		checker.WithoutGeneratedCode = currCase.withoutGeneratedCode
+		loadPackages = func(cfg *packages.Config, paths ...string) ([]*packages.Package, error) {
+			cfg.Env = append(os.Environ(), "GOPATH="+tmpGopath)
+			cfg.Dir = testVendorDir
+			pkgs, err := packages.Load(cfg, paths...)
+			return pkgs, err
+		}
+		err := checker.CheckPackages(path.Join("github.com/testvendor"))
+
+		if currCase.numExpectedErrs == 0 {
+			if err != nil {
+				t.Errorf("Case %d: expected no errors, but got: %v", i, err)
+			}
+			continue
+		}
+
+		uerr, ok := err.(*UncheckedErrors)
+		if !ok {
+			t.Errorf("Case %d: wrong error type returned: %v", i, err)
 			continue
 		}
 
@@ -193,7 +403,7 @@ func test(t *testing.T, f flags) {
 	err := checker.CheckPackages(testPackage)
 	uerr, ok := err.(*UncheckedErrors)
 	if !ok {
-		t.Fatal("wrong error type returned")
+		t.Fatalf("wrong error type returned: %v", err)
 	}
 
 	numErrors := len(uncheckedMarkers)
