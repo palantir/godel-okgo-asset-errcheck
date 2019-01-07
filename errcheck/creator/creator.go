@@ -103,10 +103,6 @@ func (c *postActionChecker) Check(pkgPaths []string, projectDir string, stdout i
 	if c.action != nil {
 		defer c.action()
 	}
-	// trim "./" prefixes to support package path formats for Go modules
-	for i := range pkgPaths {
-		pkgPaths[i] = strings.TrimPrefix(pkgPaths[i], "./")
-	}
 	c.Checker.Check(pkgPaths, projectDir, stdout)
 }
 
