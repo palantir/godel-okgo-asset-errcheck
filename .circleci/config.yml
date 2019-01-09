@@ -3,7 +3,7 @@ owner-repo: &owner-repo
 
 excutor: &executor
   executor:
-    name: go/golang-1_11
+    name: go/darwin-linux-no-cgo
     <<: *owner-repo
 
 version: 2.1
