@@ -23,7 +23,7 @@ import (
 
 	"github.com/palantir/godel-okgo-asset-errcheck/errcheck/config"
 	"github.com/palantir/godel-okgo-asset-errcheck/errcheck/creator"
-	"github.com/palantir/godel-okgo-asset-errcheck/generated_src"
+	amalgomatedcheck "github.com/palantir/godel-okgo-asset-errcheck/generated_src"
 )
 
 func main() {

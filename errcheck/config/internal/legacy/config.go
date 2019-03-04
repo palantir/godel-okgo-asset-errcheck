@@ -19,7 +19,7 @@ import (
 	"github.com/pkg/errors"
 	"gopkg.in/yaml.v2"
 
-	"github.com/palantir/godel-okgo-asset-errcheck/errcheck/config/internal/v0"
+	v0 "github.com/palantir/godel-okgo-asset-errcheck/errcheck/config/internal/v0"
 )
 
 type Config struct {
