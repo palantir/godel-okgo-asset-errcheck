@@ -16,7 +16,7 @@ package config
 
 import (
 	"github.com/palantir/godel-okgo-asset-errcheck/errcheck"
-	"github.com/palantir/godel-okgo-asset-errcheck/errcheck/config/internal/v0"
+	v0 "github.com/palantir/godel-okgo-asset-errcheck/errcheck/config/internal/v0"
 )
 
 type Errcheck v0.Config
