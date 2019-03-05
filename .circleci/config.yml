@@ -26,6 +26,7 @@ workflows:
           name: verify
           <<: *executor
           <<: *all-tags-filter
+          mod-cache: false
       - godel/test:
           name: test
           <<: *executor
