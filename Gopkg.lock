@@ -146,6 +146,24 @@
   revision = "6ef6fc2811e260af0641aae25a45881217b3cf3d"
 
 [[projects]]
+  digest = "1:16afba80d443c3be06688afdf269c0c19f173e0f2ed7df55f2725042cbde1dba"
+  name = "github.com/palantir/godel-okgo-asset-errcheck"
+  packages = [
+    "errcheck",
+    "errcheck/config",
+    "errcheck/config/internal/legacy",
+    "errcheck/config/internal/v0",
+    "errcheck/creator",
+    "generated_src",
+    "generated_src/internal/github.com/kisielk/errcheck",
+    "generated_src/internal/github.com/kisielk/errcheck/amalgomated_flag",
+    "generated_src/internal/github.com/kisielk/errcheck/internal/errcheck",
+  ]
+  pruneopts = "UT"
+  revision = "017a5ca95381aaec739fd6225667c810c4358936"
+  version = "v1.4.0"
+
+[[projects]]
   digest = "1:0b29cbfa2693c66eb778625dfcf20abbedd10b14d6f4600414405ab98ee7dcac"
   name = "github.com/palantir/okgo"
   packages = [
@@ -285,6 +303,15 @@
     "github.com/kisielk/errcheck",
     "github.com/nmiyake/pkg/gofiles",
     "github.com/palantir/amalgomate/amalgomated",
+    "github.com/palantir/godel-okgo-asset-errcheck/errcheck",
+    "github.com/palantir/godel-okgo-asset-errcheck/errcheck/config",
+    "github.com/palantir/godel-okgo-asset-errcheck/errcheck/config/internal/legacy",
+    "github.com/palantir/godel-okgo-asset-errcheck/errcheck/config/internal/v0",
+    "github.com/palantir/godel-okgo-asset-errcheck/errcheck/creator",
+    "github.com/palantir/godel-okgo-asset-errcheck/generated_src",
+    "github.com/palantir/godel-okgo-asset-errcheck/generated_src/internal/github.com/kisielk/errcheck",
+    "github.com/palantir/godel-okgo-asset-errcheck/generated_src/internal/github.com/kisielk/errcheck/amalgomated_flag",
+    "github.com/palantir/godel-okgo-asset-errcheck/generated_src/internal/github.com/kisielk/errcheck/internal/errcheck",
     "github.com/palantir/godel/framework/pluginapitester",
     "github.com/palantir/godel/pkg/products/v2/products",
     "github.com/palantir/godel/pkg/versionedconfig",
