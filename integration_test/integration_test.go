@@ -59,6 +59,10 @@ func TestCheck(t *testing.T) {
 				Name: "unchecked error",
 				Specs: []gofiles.GoFileSpec{
 					{
+						RelPath: "go.mod",
+						Src:     "module foo",
+					},
+					{
 						RelPath: "foo.go",
 						Src: `package foo
 
@@ -83,6 +87,10 @@ Check(s) produced output: [errcheck]
 			{
 				Name: "errcheck uses ignore configuration",
 				Specs: []gofiles.GoFileSpec{
+					{
+						RelPath: "go.mod",
+						Src:     "module foo",
+					},
 					{
 						RelPath: "foo.go",
 						Src: `package foo
@@ -113,6 +121,10 @@ Finished errcheck
 				Name: "errcheck uses exclude configuration",
 				Specs: []gofiles.GoFileSpec{
 					{
+						RelPath: "go.mod",
+						Src:     "module foo",
+					},
+					{
 						RelPath: "foo.go",
 						Src: `package foo
 
@@ -141,6 +153,10 @@ Finished errcheck
 			{
 				Name: "unchecked error from inner directory",
 				Specs: []gofiles.GoFileSpec{
+					{
+						RelPath: "go.mod",
+						Src:     "module foo",
+					},
 					{
 						RelPath: "foo.go",
 						Src: `package foo
