@@ -12,32 +12,24 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package config
+package packages
 
 import (
-	"github.com/palantir/godel/v2/pkg/versionedconfig"
+	"github.com/palantir/pkg/matcher"
+	"github.com/palantir/pkg/pkgpath"
 	"github.com/pkg/errors"
-
-	"github.com/palantir/godel-okgo-asset-errcheck/errcheck/config/internal/legacy"
-	v0 "github.com/palantir/godel-okgo-asset-errcheck/errcheck/config/internal/v0"
 )
 
-func UpgradeConfig(cfgBytes []byte) ([]byte, error) {
-	if versionedconfig.IsLegacyConfig(cfgBytes) {
-		v0Bytes, err := legacy.UpgradeConfig(cfgBytes)
-		if err != nil {
-			return nil, err
-		}
-		cfgBytes = v0Bytes
-	}
-	version, err := versionedconfig.ConfigVersion(cfgBytes)
+func List(exclude matcher.Matcher, wd string) ([]string, error) {
+	pkgs, err := pkgpath.PackagesInDir(wd, exclude)
 	if err != nil {
-		return nil, err
+		return nil, errors.Wrapf(err, "failed to list packages")
 	}
-	switch version {
-	case "", "0":
-		return v0.UpgradeConfig(cfgBytes)
-	default:
-		return nil, errors.Errorf("unsupported version: %s", version)
+
+	pkgPaths, err := pkgs.Paths(pkgpath.Relative)
+	if err != nil {
+		return nil, errors.Wrapf(err, "failed to get package paths")
 	}
+
+	return pkgPaths, nil
 }
