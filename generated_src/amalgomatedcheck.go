@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"sort"
 
-	errcheck "github.com/palantir/godel-okgo-asset-errcheck/generated_src/internal/github.com/kisielk/errcheck"
+	errcheck "."
 )
 
 var programs = map[string]func(){"errcheck": func() {
