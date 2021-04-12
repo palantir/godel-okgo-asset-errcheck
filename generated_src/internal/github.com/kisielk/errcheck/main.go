@@ -2,7 +2,7 @@ package amalgomated
 
 import (
 	"bufio"
-	"github.com/palantir/godel-okgo-asset-errcheck/generated_src/internal/github.com/kisielk/errcheck/amalgomated_flag"
+	"amalgomated_flag"
 	"fmt"
 	"os"
 	"path/filepath"
@@ -10,7 +10,7 @@ import (
 	"runtime"
 	"strings"
 
-	"github.com/palantir/godel-okgo-asset-errcheck/generated_src/internal/github.com/kisielk/errcheck/internal/errcheck"
+	"./internal/errcheck"
 )
 
 const (
