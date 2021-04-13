@@ -33,20 +33,20 @@ var (
 
 // UncheckedError indicates the position of an unchecked error return.
 type UncheckedError struct {
-	Pos		token.Position
-	Line		string
-	FuncName	string
+	Pos      token.Position
+	Line     string
+	FuncName string
 }
 
 // UncheckedErrors is returned from the CheckPackage function if the package contains
 // any unchecked errors.
 // Errors should be appended using the Append method, which is safe to use concurrently.
 type UncheckedErrors struct {
-	mu	sync.Mutex
+	mu sync.Mutex
 
 	// Errors is a list of all the unchecked errors in the package.
 	// Printing an error reports its position within the file and the contents of the line.
-	Errors	[]UncheckedError
+	Errors []UncheckedError
 }
 
 func (e *UncheckedErrors) Append(errors ...UncheckedError) {
@@ -60,10 +60,10 @@ func (e *UncheckedErrors) Error() string {
 }
 
 // Len is the number of elements in the collection.
-func (e *UncheckedErrors) Len() int	{ return len(e.Errors) }
+func (e *UncheckedErrors) Len() int { return len(e.Errors) }
 
 // Swap swaps the elements with indexes i and j.
-func (e *UncheckedErrors) Swap(i, j int)	{ e.Errors[i], e.Errors[j] = e.Errors[j], e.Errors[i] }
+func (e *UncheckedErrors) Swap(i, j int) { e.Errors[i], e.Errors[j] = e.Errors[j], e.Errors[i] }
 
 type byName struct{ *UncheckedErrors }
 
@@ -90,27 +90,27 @@ type Checker struct {
 	// ignore is a map of package names to regular expressions. Identifiers from a package are
 	// checked against its regular expressions and if any of the expressions match the call
 	// is not checked.
-	Ignore	map[string]*regexp.Regexp
+	Ignore map[string]*regexp.Regexp
 
 	// If blank is true then assignments to the blank identifier are also considered to be
 	// ignored errors.
-	Blank	bool
+	Blank bool
 
 	// If asserts is true then ignored type assertion results are also checked
-	Asserts	bool
+	Asserts bool
 
 	// build tags
-	Tags	[]string
+	Tags []string
 
-	Verbose	bool
+	Verbose bool
 
 	// If true, checking of _test.go files is disabled
-	WithoutTests	bool
+	WithoutTests bool
 
 	// If true, checking of files with generated code is disabled
-	WithoutGeneratedCode	bool
+	WithoutGeneratedCode bool
 
-	exclude	map[string]bool
+	exclude map[string]bool
 }
 
 func NewChecker() *Checker {
@@ -179,9 +179,9 @@ var loadPackages = func(cfg *packages.Config, paths ...string) ([]*packages.Pack
 
 func (c *Checker) load(paths ...string) ([]*packages.Package, error) {
 	cfg := &packages.Config{
-		Mode:		packages.LoadAllSyntax,
-		Tests:		!c.WithoutTests,
-		BuildFlags:	[]string{fmt.Sprintf("-tags=%s", strings.Join(c.Tags, " "))},
+		Mode:       packages.LoadAllSyntax,
+		Tests:      !c.WithoutTests,
+		BuildFlags: []string{fmt.Sprintf("-tags=%s", strings.Join(c.Tags, " "))},
 	}
 	return loadPackages(cfg, paths...)
 }
@@ -227,13 +227,13 @@ func (c *Checker) CheckPackages(paths ...string) error {
 			c.logf("Checking %s", pkg.Types.Path())
 
 			v := &visitor{
-				pkg:		pkg,
-				ignore:		c.Ignore,
-				blank:		c.Blank,
-				asserts:	c.Asserts,
-				lines:		make(map[string][]string),
-				exclude:	c.exclude,
-				errors:		[]UncheckedError{},
+				pkg:     pkg,
+				ignore:  c.Ignore,
+				blank:   c.Blank,
+				asserts: c.Asserts,
+				lines:   make(map[string][]string),
+				exclude: c.exclude,
+				errors:  []UncheckedError{},
 			}
 
 			for _, astFile := range v.pkg.Syntax {
@@ -251,7 +251,7 @@ func (c *Checker) CheckPackages(paths ...string) error {
 		// Sort unchecked errors and remove duplicates. Duplicates may occur when a file
 		// containing an unchecked error belongs to > 1 package.
 		sort.Sort(byName{u})
-		uniq := u.Errors[:0]	// compact in-place
+		uniq := u.Errors[:0] // compact in-place
 		for i, err := range u.Errors {
 			if i == 0 || err != u.Errors[i-1] {
 				uniq = append(uniq, err)
@@ -265,14 +265,14 @@ func (c *Checker) CheckPackages(paths ...string) error {
 
 // visitor implements the errcheck algorithm
 type visitor struct {
-	pkg	*packages.Package
-	ignore	map[string]*regexp.Regexp
-	blank	bool
-	asserts	bool
-	lines	map[string][]string
-	exclude	map[string]bool
+	pkg     *packages.Package
+	ignore  map[string]*regexp.Regexp
+	blank   bool
+	asserts bool
+	lines   map[string][]string
+	exclude map[string]bool
 
-	errors	[]UncheckedError
+	errors []UncheckedError
 }
 
 // selectorAndFunc tries to get the selector and function from call expression.
