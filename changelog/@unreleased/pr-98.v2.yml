@@ -1,0 +1,5 @@
+type: improvement
+improvement:
+  description: Update module dependency for golang.org/x/tools
+  links:
+  - https://github.com/palantir/godel-okgo-asset-errcheck/pull/98
