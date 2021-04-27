@@ -23,14 +23,13 @@ import (
 	"regexp"
 	"strings"
 
+	"github.com/palantir/godel-okgo-asset-errcheck/errcheck"
+	"github.com/palantir/godel-okgo-asset-errcheck/errcheck/config"
 	"github.com/palantir/okgo/checker"
 	"github.com/palantir/okgo/okgo"
 	"github.com/palantir/pkg/signals"
 	"github.com/pkg/errors"
 	"gopkg.in/yaml.v2"
-
-	"github.com/palantir/godel-okgo-asset-errcheck/errcheck"
-	"github.com/palantir/godel-okgo-asset-errcheck/errcheck/config"
 )
 
 var lineRegexp = regexp.MustCompile(`(.+):(\d+):(\d+):\t(.+)`)
