@@ -3,16 +3,16 @@ module github.com/palantir/godel-okgo-asset-errcheck
 go 1.17
 
 require (
-	github.com/kisielk/errcheck v1.2.0
+	github.com/kisielk/errcheck v1.5.0
 	github.com/nmiyake/pkg/gofiles v1.2.0
 	github.com/palantir/amalgomate v1.5.0
-	github.com/palantir/godel/v2 v2.40.0
+	github.com/palantir/godel/v2 v2.41.0
 	github.com/palantir/okgo v1.8.0
 	github.com/palantir/pkg/cobracli v1.0.1
 	github.com/palantir/pkg/signals v1.0.1
 	github.com/pkg/errors v0.8.1
 	github.com/stretchr/testify v1.7.0
-	golang.org/x/tools v0.1.1
+	golang.org/x/tools v0.1.2
 	gopkg.in/yaml.v2 v2.4.0
 )
 
@@ -47,7 +47,7 @@ require (
 	github.com/pierrec/lz4 v2.0.5+incompatible // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
 	github.com/rogpeppe/go-internal v1.7.0 // indirect
-	github.com/spf13/cobra v1.1.3 // indirect
+	github.com/spf13/cobra v1.2.1 // indirect
 	github.com/spf13/pflag v1.0.5 // indirect
 	github.com/termie/go-shutil v0.0.0-20140729215957-bcacb06fecae // indirect
 	github.com/ulikunitz/xz v0.5.6 // indirect
@@ -56,5 +56,5 @@ require (
 	golang.org/x/sys v0.0.0-20210510120138-977fb7262007 // indirect
 	golang.org/x/xerrors v0.0.0-20200804184101-5ec99f83aff1 // indirect
 	gopkg.in/cheggaaa/pb.v1 v1.0.22 // indirect
-	gopkg.in/yaml.v3 v3.0.0-20200313102051-9f266ea9e77c // indirect
+	gopkg.in/yaml.v3 v3.0.0-20210107192922-496545a6307b // indirect
 )
