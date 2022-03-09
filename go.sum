@@ -340,8 +340,8 @@ github.com/palantir/distgo/pkg/git v1.0.0/go.mod h1:eXrr3SOmf/sWTYmtiubYVxSaVegT
 github.com/palantir/godel v2.14.0+incompatible h1:votp3K0BDunem81cb8b3xdhFT/n3dgQ8q5mEzlso3d8=
 github.com/palantir/godel v2.14.0+incompatible/go.mod h1:y5sjaV4I8yAOiKeuML5FxFHOpWvXCyPPj79/5PQLq0E=
 github.com/palantir/godel/pkg/products/v2 v2.0.0/go.mod h1:SaLUycZLVP5qV6mL9MWG3jkX4dS23lJnzpubTGAV4FU=
-github.com/palantir/godel/v2 v2.49.0 h1:UqwzWOzdfSk/gWGZwWI05ojPiZvg7g4n4QZoVD6Bidc=
-github.com/palantir/godel/v2 v2.49.0/go.mod h1:smmCKpSWBQwaPv+iWyDy47x8y69M7+AvFHoe9JfK1vg=
+github.com/palantir/godel/v2 v2.50.0 h1:0pTbCm7IWvuzgxngbgOVoJRg8EsvfdkpfTKcdS3pyq8=
+github.com/palantir/godel/v2 v2.50.0/go.mod h1:smmCKpSWBQwaPv+iWyDy47x8y69M7+AvFHoe9JfK1vg=
 github.com/palantir/okgo v1.8.0 h1:13NJ0kCJWBWRG6B4tyKi+aAUQmLErVq/vhOJ/Loo9sE=
 github.com/palantir/okgo v1.8.0/go.mod h1:b6rRbS1Zxz7jkeNvY+TtLz4tO4YbM2zaEOstEEvH5/M=
 github.com/palantir/pkg v0.0.0-20180424172112-23395ebeee5d/go.mod h1:jLbXCfQ4HRrT5RRj5JuKc1ucQeridBMyRCpmzRtUYMY=
