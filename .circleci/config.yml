@@ -32,12 +32,12 @@ workflows:
   version: 2
   verify-test-dist-publish:
     jobs:
-#      - godel/verify:
-#          name: verify
-#          executor: circleci-go
-#          <<: *homepath
-#          <<: *gopath
-#          <<: *all-tags-filter
+      - godel/verify:
+          name: verify
+          executor: circleci-go
+          <<: *homepath
+          <<: *gopath
+          <<: *all-tags-filter
       - godel/test:
           name: test
           executor: circleci-go
