@@ -1,0 +1,6 @@
+type: improvement
+improvement:
+  description: Builds and publishes asset using Go 1.18 to support code that uses
+    Go 1.18 language features.
+  links:
+  - https://github.com/palantir/godel-okgo-asset-errcheck/pull/149
