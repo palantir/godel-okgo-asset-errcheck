@@ -112,7 +112,7 @@ github.com/palantir/godel/framework/verifyorder
 github.com/palantir/godel/godelgetter
 github.com/palantir/godel/pkg/osarch
 github.com/palantir/godel/pkg/versionedconfig
-# github.com/palantir/godel/v2 v2.55.0
+# github.com/palantir/godel/v2 v2.56.0
 ## explicit; go 1.18
 github.com/palantir/godel/v2/framework/artifactresolver
 github.com/palantir/godel/v2/framework/builtintasks
