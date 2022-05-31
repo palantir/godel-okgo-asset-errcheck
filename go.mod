@@ -6,7 +6,7 @@ require (
 	github.com/kisielk/errcheck v1.5.0
 	github.com/nmiyake/pkg/gofiles v1.2.0
 	github.com/palantir/amalgomate v1.5.0
-	github.com/palantir/godel/v2 v2.57.0
+	github.com/palantir/godel/v2 v2.58.0
 	github.com/palantir/okgo v1.8.0
 	github.com/palantir/pkg/cobracli v1.1.0
 	github.com/palantir/pkg/signals v1.0.1
@@ -56,5 +56,5 @@ require (
 	golang.org/x/sys v0.0.0-20211205182925-97ca703d548d // indirect
 	golang.org/x/xerrors v0.0.0-20200804184101-5ec99f83aff1 // indirect
 	gopkg.in/cheggaaa/pb.v1 v1.0.22 // indirect
-	gopkg.in/yaml.v3 v3.0.0-20210107192922-496545a6307b // indirect
+	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
