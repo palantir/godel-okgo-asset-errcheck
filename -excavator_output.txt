@@ -1,0 +1,19 @@
+go mod operation failed. This may mean that there are legitimate dependency issues with the "go.mod" definition in the repository and the updates performed by the gomod check. This branch can be cloned locally to debug the issue.
+
+Command that caused error:
+./godelw exec -- go get -d github.com/spf13/cobra@upgrade github.com/spf13/pflag@upgrade github.com/palantir/pkg/cobracli@upgrade github.com/palantir/pkg/matcher@upgrade github.com/palantir/pkg/pkgpath@upgrade github.com/palantir/pkg/signals@upgrade github.com/palantir/pkg/specdir@upgrade github.com/stretchr/testify@upgrade golang.org/x/tools@upgrade gopkg.in/yaml.v2@upgrade gopkg.in/yaml.v3@upgrade github.com/palantir/godel/v2@upgrade
+
+Output:
+go: github.com/spf13/cobra@upgrade: module github.com/spf13/cobra: Get "https://proxy.golang.org/github.com/spf13/cobra/@v/list": dial tcp 142.250.112.141:443: connect: no route to host
+go: github.com/spf13/pflag@upgrade: module github.com/spf13/pflag: Get "https://proxy.golang.org/github.com/spf13/pflag/@v/list": dial tcp 142.250.112.141:443: connect: no route to host
+go: github.com/palantir/pkg/cobracli@upgrade: module github.com/palantir/pkg/cobracli: Get "https://proxy.golang.org/github.com/palantir/pkg/cobracli/@v/list": dial tcp 142.250.112.141:443: connect: no route to host
+go: github.com/palantir/pkg/matcher@upgrade: module github.com/palantir/pkg/matcher: Get "https://proxy.golang.org/github.com/palantir/pkg/matcher/@v/list": dial tcp 142.250.112.141:443: connect: no route to host
+go: github.com/palantir/pkg/pkgpath@upgrade: module github.com/palantir/pkg/pkgpath: Get "https://proxy.golang.org/github.com/palantir/pkg/pkgpath/@v/list": dial tcp 142.250.112.141:443: connect: no route to host
+go: github.com/palantir/pkg/signals@upgrade: module github.com/palantir/pkg/signals: Get "https://proxy.golang.org/github.com/palantir/pkg/signals/@v/list": dial tcp 142.250.112.141:443: connect: no route to host
+go: github.com/palantir/pkg/specdir@upgrade: module github.com/palantir/pkg/specdir: Get "https://proxy.golang.org/github.com/palantir/pkg/specdir/@v/list": dial tcp 142.250.112.141:443: connect: no route to host
+go: github.com/stretchr/testify@upgrade: module github.com/stretchr/testify: Get "https://proxy.golang.org/github.com/stretchr/testify/@v/list": dial tcp 142.250.112.141:443: connect: no route to host
+go: golang.org/x/tools@upgrade: module golang.org/x/tools: Get "https://proxy.golang.org/golang.org/x/tools/@v/list": dial tcp 142.250.112.141:443: connect: no route to host
+go: gopkg.in/yaml.v2@upgrade: module gopkg.in/yaml.v2: Get "https://proxy.golang.org/gopkg.in/yaml.v2/@v/list": dial tcp 142.250.112.141:443: connect: no route to host
+go: gopkg.in/yaml.v3@upgrade: module gopkg.in/yaml.v3: Get "https://proxy.golang.org/gopkg.in/yaml.v3/@v/list": dial tcp 142.250.112.141:443: connect: no route to host
+go: github.com/palantir/godel/v2@upgrade: module github.com/palantir/godel/v2: Get "https://proxy.golang.org/github.com/palantir/godel/v2/@v/list": dial tcp 142.250.112.141:443: connect: no route to host
+Error: exit status 1
