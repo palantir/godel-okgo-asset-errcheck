@@ -29,18 +29,9 @@ github.com/golang/gddo/httputil/header
 # github.com/golang/snappy v0.0.3
 ## explicit
 github.com/golang/snappy
-# github.com/google/go-github v15.0.0+incompatible
-## explicit
-github.com/google/go-github/github
-# github.com/google/go-querystring v0.0.0-20170111101155-53e6ce116135
-## explicit
-github.com/google/go-querystring/query
 # github.com/inconshreveable/mousetrap v1.1.0
 ## explicit; go 1.18
 github.com/inconshreveable/mousetrap
-# github.com/kardianos/osext v0.0.0-20170510131534-ae77be60afb1
-## explicit
-github.com/kardianos/osext
 # github.com/kisielk/errcheck v1.5.0
 ## explicit; go 1.14
 github.com/kisielk/errcheck
@@ -65,9 +56,6 @@ github.com/mattn/go-isatty
 # github.com/mattn/go-runewidth v0.0.4
 ## explicit
 github.com/mattn/go-runewidth
-# github.com/mholt/archiver v2.1.0+incompatible
-## explicit
-github.com/mholt/archiver
 # github.com/mholt/archiver/v3 v3.3.0
 ## explicit; go 1.12
 github.com/mholt/archiver/v3
@@ -83,35 +71,9 @@ github.com/nmiyake/pkg/gofiles
 # github.com/nwaples/rardecode v1.0.0
 ## explicit
 github.com/nwaples/rardecode
-# github.com/palantir/amalgomate v1.5.0
-## explicit; go 1.13
+# github.com/palantir/amalgomate v1.31.0
+## explicit; go 1.20
 github.com/palantir/amalgomate/amalgomated
-# github.com/palantir/godel v2.14.0+incompatible
-## explicit
-github.com/palantir/godel/framework/artifactresolver
-github.com/palantir/godel/framework/builtintasks
-github.com/palantir/godel/framework/builtintasks/checkpath
-github.com/palantir/godel/framework/builtintasks/githooks
-github.com/palantir/godel/framework/builtintasks/githubwiki
-github.com/palantir/godel/framework/builtintasks/idea
-github.com/palantir/godel/framework/builtintasks/installupdate
-github.com/palantir/godel/framework/builtintasks/installupdate/layout
-github.com/palantir/godel/framework/builtintasks/packages
-github.com/palantir/godel/framework/godel
-github.com/palantir/godel/framework/godel/config
-github.com/palantir/godel/framework/godel/config/internal/v0
-github.com/palantir/godel/framework/godellauncher
-github.com/palantir/godel/framework/godellauncher/defaulttasks
-github.com/palantir/godel/framework/internal/pathsinternal
-github.com/palantir/godel/framework/internal/pluginsinternal
-github.com/palantir/godel/framework/pluginapi
-github.com/palantir/godel/framework/pluginapi/v2/pluginapi
-github.com/palantir/godel/framework/pluginapitester
-github.com/palantir/godel/framework/plugins
-github.com/palantir/godel/framework/verifyorder
-github.com/palantir/godel/godelgetter
-github.com/palantir/godel/pkg/osarch
-github.com/palantir/godel/pkg/versionedconfig
 # github.com/palantir/godel/v2 v2.88.0
 ## explicit; go 1.20
 github.com/palantir/godel/v2/framework/artifactresolver
@@ -138,8 +100,8 @@ github.com/palantir/godel/v2/godelgetter
 github.com/palantir/godel/v2/pkg/osarch
 github.com/palantir/godel/v2/pkg/products
 github.com/palantir/godel/v2/pkg/versionedconfig
-# github.com/palantir/okgo v1.8.0
-## explicit; go 1.13
+# github.com/palantir/okgo v1.38.0
+## explicit; go 1.20
 github.com/palantir/okgo/checker
 github.com/palantir/okgo/okgo
 github.com/palantir/okgo/okgotester
@@ -165,7 +127,7 @@ github.com/palantir/pkg/specdir
 ## explicit
 github.com/pierrec/lz4
 github.com/pierrec/lz4/internal/xxh32
-# github.com/pkg/errors v0.8.1
+# github.com/pkg/errors v0.9.1
 ## explicit
 github.com/pkg/errors
 # github.com/pmezard/go-difflib v1.0.0
@@ -187,9 +149,6 @@ github.com/spf13/pflag
 ## explicit; go 1.20
 github.com/stretchr/testify/assert
 github.com/stretchr/testify/require
-# github.com/termie/go-shutil v0.0.0-20140729215957-bcacb06fecae
-## explicit
-github.com/termie/go-shutil
 # github.com/ulikunitz/xz v0.5.10
 ## explicit; go 1.12
 github.com/ulikunitz/xz
@@ -223,9 +182,6 @@ golang.org/x/tools/internal/pkgbits
 golang.org/x/tools/internal/tokeninternal
 golang.org/x/tools/internal/typeparams
 golang.org/x/tools/internal/typesinternal
-# gopkg.in/cheggaaa/pb.v1 v1.0.22
-## explicit
-gopkg.in/cheggaaa/pb.v1
 # gopkg.in/yaml.v2 v2.4.0
 ## explicit; go 1.15
 gopkg.in/yaml.v2
