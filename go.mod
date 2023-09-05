@@ -12,7 +12,7 @@ require (
 	github.com/palantir/pkg/signals v1.1.0
 	github.com/pkg/errors v0.9.1
 	github.com/stretchr/testify v1.8.4
-	golang.org/x/tools v0.12.0
+	golang.org/x/tools v0.13.0
 	gopkg.in/yaml.v2 v2.4.0
 )
 
@@ -47,6 +47,6 @@ require (
 	github.com/ulikunitz/xz v0.5.10 // indirect
 	github.com/xi2/xz v0.0.0-20171230120015-48954b6210f8 // indirect
 	golang.org/x/mod v0.12.0 // indirect
-	golang.org/x/sys v0.11.0 // indirect
+	golang.org/x/sys v0.12.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
