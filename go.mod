@@ -1,6 +1,6 @@
 module github.com/palantir/godel-okgo-asset-errcheck
 
-go 1.20
+go 1.21
 
 require (
 	github.com/kisielk/errcheck v1.5.0
