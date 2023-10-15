@@ -5,9 +5,9 @@ go 1.21
 require (
 	github.com/kisielk/errcheck v1.5.0
 	github.com/nmiyake/pkg/gofiles v1.2.0
-	github.com/palantir/amalgomate v1.33.0
+	github.com/palantir/amalgomate v1.34.0
 	github.com/palantir/godel/v2 v2.93.0
-	github.com/palantir/okgo v1.40.0
+	github.com/palantir/okgo v1.41.0
 	github.com/palantir/pkg/cobracli v1.2.0
 	github.com/palantir/pkg/signals v1.1.0
 	github.com/pkg/errors v0.9.1
