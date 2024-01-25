@@ -6,8 +6,8 @@ require (
 	github.com/kisielk/errcheck v1.5.0
 	github.com/nmiyake/pkg/gofiles v1.2.0
 	github.com/palantir/amalgomate v1.37.0
-	github.com/palantir/godel/v2 v2.99.0
-	github.com/palantir/okgo v1.45.0
+	github.com/palantir/godel/v2 v2.100.0
+	github.com/palantir/okgo v1.46.0
 	github.com/palantir/pkg/cobracli v1.2.0
 	github.com/palantir/pkg/signals v1.1.0
 	github.com/pkg/errors v0.9.1
@@ -47,6 +47,7 @@ require (
 	github.com/ulikunitz/xz v0.5.10 // indirect
 	github.com/xi2/xz v0.0.0-20171230120015-48954b6210f8 // indirect
 	golang.org/x/mod v0.14.0 // indirect
+	golang.org/x/sync v0.6.0 // indirect
 	golang.org/x/sys v0.14.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
