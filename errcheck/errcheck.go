@@ -21,6 +21,7 @@ import (
 const (
 	TypeName okgo.CheckerType     = "errcheck"
 	Priority okgo.CheckerPriority = 0
+	MultiCPU okgo.CheckerMultiCPU = true
 )
 
 type Checker struct {

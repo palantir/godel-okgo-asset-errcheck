@@ -38,6 +38,7 @@ func Errcheck() checker.Creator {
 	return checker.NewCreator(
 		errcheck.TypeName,
 		errcheck.Priority,
+		errcheck.MultiCPU,
 		func(cfgYML []byte) (okgo.Checker, error) {
 			var cfg config.Errcheck
 			if err := yaml.UnmarshalStrict(cfgYML, &cfg); err != nil {
