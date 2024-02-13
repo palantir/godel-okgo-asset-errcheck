@@ -7,7 +7,7 @@ require (
 	github.com/nmiyake/pkg/gofiles v1.2.0
 	github.com/palantir/amalgomate v1.38.0
 	github.com/palantir/godel/v2 v2.101.0
-	github.com/palantir/okgo v1.47.1-0.20240213232948-445b9ca64e33
+	github.com/palantir/okgo v1.47.1-0.20240213233635-8e7f44f047ba
 	github.com/palantir/pkg/cobracli v1.2.0
 	github.com/palantir/pkg/signals v1.1.0
 	github.com/pkg/errors v0.9.1
