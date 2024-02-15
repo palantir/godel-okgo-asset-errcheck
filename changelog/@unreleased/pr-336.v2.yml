@@ -1,0 +1,6 @@
+type: improvement
+improvement:
+  description: Bump to okgo v1.50.0 to use NewCreatorWithMultiCPU and denote errcheck
+    errcheck.MultiCPU is true
+  links:
+  - https://github.com/palantir/godel-okgo-asset-errcheck/pull/336

@@ -35,9 +35,10 @@ import (
 var lineRegexp = regexp.MustCompile(`(.+):(\d+):(\d+):\t(.+)`)
 
 func Errcheck() checker.Creator {
-	return checker.NewCreator(
+	return checker.NewCreatorWithMultiCPU(
 		errcheck.TypeName,
 		errcheck.Priority,
+		errcheck.MultiCPU,
 		func(cfgYML []byte) (okgo.Checker, error) {
 			var cfg config.Errcheck
 			if err := yaml.UnmarshalStrict(cfgYML, &cfg); err != nil {
