@@ -6,7 +6,7 @@ require (
 	github.com/kisielk/errcheck v1.5.0
 	github.com/nmiyake/pkg/gofiles v1.2.0
 	github.com/palantir/amalgomate v1.39.0
-	github.com/palantir/godel/v2 v2.105.0
+	github.com/palantir/godel/v2 v2.106.0
 	github.com/palantir/okgo v1.53.0
 	github.com/palantir/pkg/cobracli v1.2.0
 	github.com/palantir/pkg/signals v1.1.0
