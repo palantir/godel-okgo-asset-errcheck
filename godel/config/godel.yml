@@ -22,3 +22,18 @@ exclude:
     - generated_src
   paths:
     - godel
+default-tasks:
+  tasks:
+    com.palantir.okgo:check-plugin:
+      exclude-default-assets:
+        - com.palantir.godel-okgo-asset-compiles:compiles-asset
+        - com.palantir.godel-okgo-asset-deadcode:deadcode-asset
+        - com.palantir.godel-okgo-asset-errcheck:errcheck-asset
+        - com.palantir.godel-okgo-asset-outparamcheck:outparamcheck-asset
+        - com.palantir.godel-okgo-asset-unconvert:unconvert-asset
+        - com.palantir.godel-okgo-asset-varcheck:varcheck-asset
+      assets:
+        - locator:
+            id: com.palantir.godel-okgo-asset-compiles:compiles-asset:1.55.0
+        - locator:
+            id: com.palantir.godel-okgo-asset-deadcode:deadcode-asset:1.48.0
