@@ -35,3 +35,5 @@ default-tasks:
       assets:
         - locator:
             id: com.palantir.godel-okgo-asset-compiles:compiles-asset:1.55.0
+        - locator:
+            id: com.palantir.godel-okgo-asset-deadcode:deadcode-asset:1.48.0
