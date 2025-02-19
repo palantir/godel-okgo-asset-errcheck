@@ -1,0 +1,5 @@
+type: improvement
+improvement:
+  description: Build using Go 1.24
+  links:
+  - https://github.com/palantir/godel-okgo-asset-errcheck/pull/430
