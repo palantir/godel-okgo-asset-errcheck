@@ -79,7 +79,7 @@ github.com/nwaples/rardecode
 # github.com/palantir/amalgomate v1.52.0
 ## explicit; go 1.25.0
 github.com/palantir/amalgomate/amalgomated
-# github.com/palantir/godel/v2 v2.137.0
+# github.com/palantir/godel/v2 v2.138.0
 ## explicit; go 1.25.0
 github.com/palantir/godel/v2/framework/artifactresolver
 github.com/palantir/godel/v2/framework/builtintasks
@@ -113,20 +113,20 @@ github.com/palantir/okgo/okgotester
 # github.com/palantir/pkg v1.1.0
 ## explicit; go 1.19
 github.com/palantir/pkg
-# github.com/palantir/pkg/cobracli v1.2.0
-## explicit; go 1.19
+# github.com/palantir/pkg/cobracli v1.3.0
+## explicit; go 1.25.0
 github.com/palantir/pkg/cobracli
 # github.com/palantir/pkg/matcher v1.3.0
 ## explicit; go 1.25.0
 github.com/palantir/pkg/matcher
-# github.com/palantir/pkg/pkgpath v1.3.0
-## explicit; go 1.21
+# github.com/palantir/pkg/pkgpath v1.4.0
+## explicit; go 1.25.0
 github.com/palantir/pkg/pkgpath
 # github.com/palantir/pkg/signals v1.2.0
 ## explicit; go 1.25.0
 github.com/palantir/pkg/signals
-# github.com/palantir/pkg/specdir v1.2.0
-## explicit; go 1.19
+# github.com/palantir/pkg/specdir v1.3.0
+## explicit; go 1.25.0
 github.com/palantir/pkg/specdir
 # github.com/pierrec/lz4/v4 v4.1.22
 ## explicit; go 1.14
