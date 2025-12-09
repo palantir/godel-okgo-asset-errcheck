@@ -12,7 +12,7 @@ require (
 	github.com/palantir/pkg/signals v1.2.0
 	github.com/pkg/errors v0.9.1
 	github.com/stretchr/testify v1.11.1
-	golang.org/x/tools v0.39.0
+	golang.org/x/tools v0.40.0
 	gopkg.in/yaml.v2 v2.4.0
 )
 
