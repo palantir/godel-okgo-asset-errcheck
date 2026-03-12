@@ -32,7 +32,7 @@ github.com/golang/snappy
 # github.com/inconshreveable/mousetrap v1.1.0
 ## explicit; go 1.18
 github.com/inconshreveable/mousetrap
-# github.com/kisielk/errcheck v1.9.0
+# github.com/kisielk/errcheck v1.10.0
 ## explicit; go 1.22.0
 github.com/kisielk/errcheck
 github.com/kisielk/errcheck/errcheck
