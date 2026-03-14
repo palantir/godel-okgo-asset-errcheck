@@ -3,7 +3,7 @@ module github.com/palantir/godel-okgo-asset-errcheck
 go 1.26.0
 
 require (
-	github.com/kisielk/errcheck v1.9.0
+	github.com/kisielk/errcheck v1.10.0
 	github.com/nmiyake/pkg/gofiles v1.2.0
 	github.com/palantir/amalgomate v1.53.0
 	github.com/palantir/godel/v2 v2.153.0
