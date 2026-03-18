@@ -18,7 +18,6 @@ import (
 	"context"
 	"fmt"
 	"io"
-	"io/ioutil"
 	"os"
 	"regexp"
 	"strings"
@@ -107,7 +106,7 @@ func (c *postActionChecker) Check(pkgPaths []string, projectDir string, stdout i
 }
 
 func createExcludeFile(excludes []string) (file string, err error) {
-	tmp, err := ioutil.TempFile("", "")
+	tmp, err := os.CreateTemp("", "")
 	if err != nil {
 		return "", errors.Wrap(err, "failed to create temporary file")
 	}
