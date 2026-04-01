@@ -6,7 +6,7 @@ require (
 	github.com/kisielk/errcheck v1.9.0
 	github.com/nmiyake/pkg/gofiles v1.2.0
 	github.com/palantir/amalgomate v1.54.0
-	github.com/palantir/godel/v2 v2.154.0
+	github.com/palantir/godel/v2 v2.153.0
 	github.com/palantir/okgo v1.66.0
 	github.com/palantir/pkg/cobracli v1.3.0
 	github.com/palantir/pkg/signals v1.2.0
@@ -40,7 +40,7 @@ require (
 	github.com/palantir/pkg/matcher v1.3.0 // indirect
 	github.com/palantir/pkg/pkgpath v1.4.0 // indirect
 	github.com/palantir/pkg/specdir v1.3.0 // indirect
-	github.com/pierrec/lz4/v4 v4.1.26 // indirect
+	github.com/pierrec/lz4/v4 v4.1.25 // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
 	github.com/rogpeppe/go-internal v1.14.1 // indirect
 	github.com/spf13/cobra v1.10.2 // indirect
