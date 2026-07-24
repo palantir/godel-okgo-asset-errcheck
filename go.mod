@@ -5,7 +5,7 @@ go 1.26.0
 toolchain go1.26.5
 
 require (
-	github.com/kisielk/errcheck v1.9.0
+	github.com/kisielk/errcheck v1.20.0
 	github.com/nmiyake/pkg/gofiles v1.2.0
 	github.com/palantir/amalgomate v1.58.0
 	github.com/palantir/godel/v2 v2.163.0
