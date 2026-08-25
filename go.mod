@@ -6,7 +6,7 @@ require (
 	github.com/kisielk/errcheck v1.9.0
 	github.com/nmiyake/pkg/gofiles v1.2.0
 	github.com/palantir/amalgomate v1.58.0
-	github.com/palantir/godel/v2 v2.173.0
+	github.com/palantir/godel/v2 v2.174.0
 	github.com/palantir/okgo v1.72.0
 	github.com/palantir/pkg/cobracli v1.3.0
 	github.com/palantir/pkg/signals v1.2.0
@@ -19,7 +19,7 @@ require (
 require (
 	github.com/VividCortex/ewma v1.2.0 // indirect
 	github.com/andybalholm/brotli v1.2.2 // indirect
-	github.com/cheggaaa/pb/v3 v3.2.0 // indirect
+	github.com/cheggaaa/pb/v3 v3.2.1 // indirect
 	github.com/clipperhouse/uax29/v2 v2.7.0 // indirect
 	github.com/dsnet/compress v0.0.2-0.20210315054119-f66993602bf5 // indirect
 	github.com/fatih/color v1.19.0 // indirect

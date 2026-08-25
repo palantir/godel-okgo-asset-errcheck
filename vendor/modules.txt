@@ -6,7 +6,7 @@ github.com/VividCortex/ewma
 github.com/andybalholm/brotli
 github.com/andybalholm/brotli/flate
 github.com/andybalholm/brotli/matchfinder
-# github.com/cheggaaa/pb/v3 v3.2.0
+# github.com/cheggaaa/pb/v3 v3.2.1
 ## explicit; go 1.25.0
 github.com/cheggaaa/pb/v3
 github.com/cheggaaa/pb/v3/termutil
@@ -80,7 +80,7 @@ github.com/nwaples/rardecode
 # github.com/palantir/amalgomate v1.58.0
 ## explicit; go 1.26.0
 github.com/palantir/amalgomate/amalgomated
-# github.com/palantir/godel/v2 v2.173.0
+# github.com/palantir/godel/v2 v2.174.0
 ## explicit; go 1.26.0
 github.com/palantir/godel/v2/framework/artifactresolver
 github.com/palantir/godel/v2/framework/builtintasks
