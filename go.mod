@@ -7,7 +7,7 @@ toolchain go1.27.1
 require (
 	github.com/kisielk/errcheck v1.20.0
 	github.com/nmiyake/pkg/gofiles v1.2.0
-	github.com/palantir/amalgomate v1.60.0
+	github.com/palantir/amalgomate v1.61.0
 	github.com/palantir/godel/v2 v2.181.0
 	github.com/palantir/okgo v1.72.0
 	github.com/palantir/pkg/cobracli v1.4.0
@@ -41,7 +41,7 @@ require (
 	github.com/palantir/pkg/matcher v1.3.0 // indirect
 	github.com/palantir/pkg/pkgpath v1.4.0 // indirect
 	github.com/palantir/pkg/specdir v1.4.0 // indirect
-	github.com/palantir/witchcraft-go-error v1.42.0 // indirect
+	github.com/palantir/witchcraft-go-error v1.49.0 // indirect
 	github.com/palantir/witchcraft-go-params v1.47.0 // indirect
 	github.com/pierrec/lz4/v4 v4.1.29 // indirect
 	github.com/rogpeppe/go-internal v1.16.0 // indirect
