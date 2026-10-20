@@ -9,7 +9,7 @@ require (
 	github.com/nmiyake/pkg/gofiles v1.2.0
 	github.com/palantir/amalgomate v1.61.0
 	github.com/palantir/godel/v2 v2.202.0
-	github.com/palantir/okgo v1.75.0
+	github.com/palantir/okgo v1.76.0
 	github.com/palantir/pkg/cobracli v1.4.0
 	github.com/palantir/pkg/signals v1.2.0
 	github.com/pkg/errors v0.9.1
