@@ -2,7 +2,7 @@ module github.com/palantir/godel-okgo-asset-errcheck
 
 go 1.27.0
 
-toolchain go1.27.3
+toolchain go1.27.4
 
 require (
 	github.com/kisielk/errcheck v1.30.0
