@@ -33,7 +33,7 @@ github.com/inconshreveable/mousetrap
 ## explicit; go 1.26.0
 github.com/kisielk/errcheck
 github.com/kisielk/errcheck/errcheck
-# github.com/klauspost/compress v1.20.4
+# github.com/klauspost/compress v1.20.5
 ## explicit; go 1.25
 github.com/klauspost/compress
 github.com/klauspost/compress/flate
@@ -80,7 +80,7 @@ github.com/nwaples/rardecode
 # github.com/palantir/amalgomate v1.63.0
 ## explicit; go 1.27.0
 github.com/palantir/amalgomate/amalgomated
-# github.com/palantir/godel/v2 v2.206.0
+# github.com/palantir/godel/v2 v2.207.0
 ## explicit; go 1.27.0
 github.com/palantir/godel/v2/framework/artifactresolver
 github.com/palantir/godel/v2/framework/builtintasks

@@ -8,7 +8,7 @@ require (
 	github.com/kisielk/errcheck v1.30.0
 	github.com/nmiyake/pkg/gofiles v1.2.0
 	github.com/palantir/amalgomate v1.63.0
-	github.com/palantir/godel/v2 v2.206.0
+	github.com/palantir/godel/v2 v2.207.0
 	github.com/palantir/okgo v1.77.0
 	github.com/palantir/pkg/cobracli v1.4.0
 	github.com/palantir/pkg/signals v1.2.0
@@ -27,7 +27,7 @@ require (
 	github.com/fatih/color v1.19.0 // indirect
 	github.com/golang/snappy v1.0.0 // indirect
 	github.com/inconshreveable/mousetrap v1.1.0 // indirect
-	github.com/klauspost/compress v1.20.4 // indirect
+	github.com/klauspost/compress v1.20.5 // indirect
 	github.com/klauspost/pgzip v1.3.0 // indirect
 	github.com/kr/text v0.2.0 // indirect
 	github.com/mattn/go-colorable v0.1.16 // indirect
